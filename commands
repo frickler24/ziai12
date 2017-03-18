@@ -1,0 +1,83 @@
+    1  systemctl enable apache2
+    2  systemctl enable apache
+    3  systemctl 
+    4  service apache2 start
+    5  apt update
+    6  apt upgrade
+    7  apt install nginx
+    8  netstat -a 
+    9  systemctl status nginx
+   10  ps alxww | grep ngi
+   11  nginx 
+   12  ps alxww | grep ngi
+   13  ***Seier
+   14  apt install netstat
+   15  netstat
+   16  apt-get install netstat
+   17  ps alxww | grep ngi
+   18  curl 
+   19  apt install curl
+   20  curl localhost:8080
+   21  curl localhost:8081
+   22  netstat
+   23  apt install net-tools
+   24  netstat -i
+   25  netstat -a
+   26  ps alxww | grep ngi
+   27  kill 664
+   28  ps alxww | grep ngi
+   29  vi /etc/nginx/nginx.conf 
+   30  apt install vi
+   31  apt install vim
+   32  vi /etc/nginx/nginx.conf 
+   33  cd /etc/nginx/
+   34  grep port *
+   35  grep 80 *
+   36  ll
+   37  cd sites-enabled/
+   38  ll
+   39  vi default 
+   40  nginx 
+   41  x
+   42  vi default 
+   43  echo $HOSTNAME
+   44  cd /var/www/html/index.nginx-debian.html
+   45  vi /var/www/html/index.nginx-debian.html
+   46  apt install -y php
+   47  fg
+   48  apt install sshd
+   49  apt install ssh
+   50  vi default 
+   51  pkill nginx
+   52  nginx
+   53  ll
+   54  cd /var/www/html/
+   55  ll
+   56  x
+   57  ll
+   58  fg
+   59  cp index.nginx-debian.html test.php
+   60  vi index.nginx-debian.html 
+   61  vi /etc/nginx/sites-enabled/default 
+   62  apt install php-fpm
+   63  netstat -a
+   64  php-fpm7.0 
+   65  man php-fpm
+   66  php-fpm7.0 --help
+   67  php-fpm7.0 -t
+   68  php-fpm7.0 -D
+   69  mkdir /run/php
+   70  php-fpm7.0 -D
+   71  pgrep php
+   72  pgrep -l php
+   73  pkill php
+   74  pgrep -l php
+   75  php-fpm7.0 -D
+   76  vi /etc/nginx/sites-enabled/default 
+   77  pkill nginx
+   78  nginx 
+   79  j
+   80  jobs
+   81  vi test.php 
+   82  history
+   83  history > /tmp/commands
