@@ -2,10 +2,10 @@
 ANZAHL=${1:-100}
 
 while true ; do {
-	echo -n +
 	for (( a=0 ; a < $ANZAHL ; a++ )) ; do
 		# curl -s -k https://raschef > /dev/null &
-		curl -s -k https://raschef/temp.png > /dev/null &
+		(curl -s -k https://raschef/temp.png > /dev/null ; echo -n ".") &
+		echo -n +
 	done
 	exit 0
 
