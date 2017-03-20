@@ -3,16 +3,28 @@ header("Content-Type: image/png");
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-$min_x=-2;
-$max_x=1;
-$min_y=-1;
-$max_y=1;
+/// Startaufstellung
+// $min_x=-2;
+// $max_x=1;
+// $min_y=-1;
+// $max_y=1;
+
+$center_x = -.87591;
+$diameter_x = 0.53184;
+$min_x = $center_x - $diameter_x;
+$max_x = $center_x + $diameter_x;
+
+$center_y = 0.20464;
+$diameter_y = $diameter_x * 3 / 4;
+$min_y = $center_y - $diameter_y;
+$max_y = $center_y + $diameter_y;
+ 
+$factor = 5.7854;
+$iter = 1000 * $factor;
  
 $dim_x=1024;
 $dim_y=768;
 
-$iter = 100;
- 
 $im = imageCreateTrueColor ($dim_x, $dim_y)
   or die("Cannot Initialize new GD image stream");
 $black_color = imagecolorallocate($im, 0, 0, 0);
@@ -36,7 +48,7 @@ for($y=0;$y<=$dim_y;$y++) {
       }
     }
     if ($i < $iter) {
-	  $c = (1 * log ($i) / log ($iter - 1.0));
+	  $c = (3 * log ($i) / log ($iter - 1.0));
 	  // echo "$c\n";
 	  if ($c < 1) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, (int)(255*$c), 0, 0));
 	  else if ($c < 2) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, (int)(255*$c-1.0), 0));
