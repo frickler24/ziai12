@@ -1,13 +1,30 @@
 <?php
-header("Content-Type: image/png");
+header("Content-Type: text/html");
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
+
+?><!DOCTYPE HTML>
+<HTML lang="de">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Mandelbrotmenge zoombar</title>
+</HEAD>
+<BODY>
+
+<h1>Hier ist ein Ausschnitt der Mandelbrotmenge</h1>
+
+<?php
+
+// echo "<pre>"; print_r ($_SERVER); echo "</pre>";
+// echo "<p></p>";
+echo "<pre>"; print_r ($_GET); echo "</pre>";
 
 $center_x = (isset($_GET["x"]))? $_GET["x"] : -0.5;
 $diameter_x = (isset($_GET["dx"]))? $_GET["dx"] : 1.5;
 $center_y = (isset($_GET["y"]))? $_GET["y"] : 0.0;
 $factor =  (isset($_GET["f"]))? $_GET["f"] : 1.0;
 $iter =  (isset($_GET["i"]))? $_GET["i"] : 100;
+
 if (isset($_GET["dy"])) $diameter_y = $_GET["dy"];	// else do nothing. is set later on.
 
 $min_x = $center_x - $diameter_x;
@@ -16,11 +33,9 @@ $max_x = $center_x + $diameter_x;
 if (!isset($diameter_y)) $diameter_y = $diameter_x * 3 / 4;
 $min_y = $center_y - $diameter_y;
 $max_y = $center_y + $diameter_y;
-
+ 
 $iter = $iter * $factor;
-
-// echo "<p>min_x = $min_x, max_x = $max_x, min_y = $min_y, max_y = $max_y, dia_y = $diameter_y, iter = $iter, factor = $factor</p>";
-
+ 
 $dim_x=1024;
 $dim_y=768;
 
@@ -47,11 +62,11 @@ for($y=0;$y<=$dim_y;$y++) {
       }
     }
     if ($i < $iter) {
-	  $c = (3 * log ($i) / log ($iter - 1.0));
+	  $c = (1 * log ($i) / log ($iter - 1.0));
 	  // echo "$c\n";
-	  if ($c < 1) imagesetpixel ($im, $x, $dim_y - $y, imageColorAllocate ($im, (int)(255*$c), 0, 0));
-	  else if ($c < 2) imagesetpixel ($im, $x, $dim_y - $y, imageColorAllocate ($im, 255, (int)(255*$c-1.0), 0));
-	  else imagesetpixel ($im, $x, $dim_y - $y, imageColorAllocate ($im, 255, 255, (int)(255*$c-2.0)));
+	  if ($c < 1) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, (int)(255*$c), 0, 0));
+	  else if ($c < 2) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, (int)(255*$c-1.0), 0));
+	  else imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, 255, (int)(255*$c-2.0)));
 	}
   }
 }
@@ -59,3 +74,5 @@ for($y=0;$y<=$dim_y;$y++) {
 imagepng($im);
 imagedestroy($im);
 ?>
+</BODY>
+</HTML>
