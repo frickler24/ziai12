@@ -8,8 +8,8 @@ $max_x=1;
 $min_y=-1;
 $max_y=1;
  
-$dim_x=800;
-$dim_y=600;
+$dim_x=1024;
+$dim_y=768;
 
 $iter = 100;
  
@@ -36,10 +36,11 @@ for($y=0;$y<=$dim_y;$y++) {
       }
     }
     if ($i < $iter) {
-	  $c = (int)(1000000 * log ($i) / log ($iter - 1.0));
-	  if ($c < 1) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255*$c, 0, 0));
-	  else if ($c < 2) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, 255*$c-1, 0));
-	  else imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, 255, 255*$c-2));
+	  $c = (1 * log ($i) / log ($iter - 1.0));
+	  // echo "$c\n";
+	  if ($c < 1) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, (int)(255*$c), 0, 0));
+	  else if ($c < 2) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, (int)(255*$c-1.0), 0));
+	  else imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, 255, (int)(255*$c-2.0)));
 	}
   }
 }
