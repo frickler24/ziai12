@@ -8,6 +8,19 @@ ini_set('display_errors', '1');
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Mandelbrotmenge zoombar</title>
+	<style>
+	table, th, td {
+		border: 0px;
+		border-spacing: 0px;
+		border-collapse: collapse;
+		line-height: 0;
+	}
+	
+	th, td {
+		padding: 0px;
+	}
+	</style>
+
 </HEAD>
 <BODY>
 
@@ -15,64 +28,60 @@ ini_set('display_errors', '1');
 
 <?php
 
-// echo "<pre>"; print_r ($_SERVER); echo "</pre>";
-// echo "<p></p>";
-echo "<pre>"; print_r ($_GET); echo "</pre>";
+$system = "Mainfrix";	// This will be an arry later
+// Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
+$dim_x=1024;
+$dim_y=$dim_x / 4 * 3;
 
 $center_x = (isset($_GET["x"]))? $_GET["x"] : -0.5;
 $diameter_x = (isset($_GET["dx"]))? $_GET["dx"] : 1.5;
 $center_y = (isset($_GET["y"]))? $_GET["y"] : 0.0;
 $factor =  (isset($_GET["f"]))? $_GET["f"] : 1.0;
 $iter =  (isset($_GET["i"]))? $_GET["i"] : 100;
+$numWorkers = (isset($_GET["nw"]))? $_GET["nw"] : 4 * 3;
+if ($numWorkers % 4 != 0 || $numWorkers % 3 != 0) {
+	$numWorkers = (int)($numWorkers / 12);
+	$numWorkers *= 12;
+}
 
 if (isset($_GET["dy"])) $diameter_y = $_GET["dy"];	// else do nothing. is set later on.
-
-$min_x = $center_x - $diameter_x;
-$max_x = $center_x + $diameter_x;
-
 if (!isset($diameter_y)) $diameter_y = $diameter_x * 3 / 4;
-$min_y = $center_y - $diameter_y;
-$max_y = $center_y + $diameter_y;
- 
-$iter = $iter * $factor;
- 
-$dim_x=1024;
-$dim_y=768;
 
-$im = imageCreateTrueColor ($dim_x, $dim_y)
-  or die("Cannot Initialize new GD image stream");
-$black_color = imagecolorallocate($im, 0, 0, 0);
-$white_color = imagecolorallocate($im, 255, 255, 255);
-
-for($y=0;$y<=$dim_y;$y++) {
-  for($x=0;$x<=$dim_x;$x++) {
-    $c1=$min_x+($max_x-$min_x)/$dim_x*$x;
-    $c2=$min_y+($max_y-$min_y)/$dim_y*$y;
- 
-    $z1=0;
-    $z2=0;
- 
-    for ($i=0; $i < $iter; $i++) {
-      $new1=$z1*$z1-$z2*$z2+$c1;
-      $new2=2*$z1*$z2+$c2;
-      $z1=$new1;
-      $z2=$new2;
-      if($z1*$z1+$z2*$z2>=4) {
-        break;
-      }
-    }
-    if ($i < $iter) {
-	  $c = (1 * log ($i) / log ($iter - 1.0));
-	  // echo "$c\n";
-	  if ($c < 1) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, (int)(255*$c), 0, 0));
-	  else if ($c < 2) imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, (int)(255*$c-1.0), 0));
-	  else imagesetpixel ($im, $x, $y, imageColorAllocate ($im, 255, 255, (int)(255*$c-2.0)));
-	}
-  }
+$cs = $numWorkers / 3;
+$rs = $numWorkers / $cs;
+while ($cs / $rs > 4/3) {
+	$cs /= 2;
+	$rs = $numWorkers / $cs;
 }
- 
-imagepng($im);
-imagedestroy($im);
+
+$cols = $cs;
+$rows = $rs;
+echo ("<p>NumWorkers = $numWorkers, Anzahl Rows = $rows und Anzahl Cols = $cols</p>\n");
 ?>
+<div>
+	<table border="0" padding="0">
+		<?php
+		$ymin = $center_y - $diameter_y;
+		$ymax = $center_y + $diameter_y;
+		$xmin = $center_x - $diameter_x;
+		$xmax = $center_x + $diameter_x;
+		
+		for ($r = $rows - 1; $r >= 0; $r--) {
+			$oben = $r * ($dim_y / $rows);
+			$unten = ($r + 1) * ($dim_y / $rows) - 1;
+			echo ("<tr>");
+			for ($c = 0; $c < $cols; $c++) {
+				$links = $c * ($dim_x / $cols);
+				$rechts = ($c + 1) * ($dim_x / $cols) - 1;
+				$str = "http://${system}/mandel.php?f=${factor}&x=${center_x}&y=${center_y}&dx=${diameter_x}&dy={$diameter_y}&i=${iter}"
+						. "&pic_min_x=${links}&pic_max_x=${rechts}&pic_min_y=${oben}&pic_max_y=${unten}";
+				echo ("<td> <img border=\"0\" src=\"${str}\"></img></td>\n");
+			}
+			echo ("</tr>\n");
+		}
+		
+		?>
+	</table>
+</div>
 </BODY>
 </HTML>
