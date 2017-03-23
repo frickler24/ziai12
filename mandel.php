@@ -29,6 +29,28 @@ $iter = $iter * $factor;
 
 // echo "<p>min_x = $min_x, max_x = $max_x, min_y = $min_y, max_y = $max_y, dia_y = $diameter_y, iter = $iter, factor = $factor</p>";
 
+// Only 255 colors may be defined max.
+// Redefinition of existing color leads to new color value.
+// This function handles both.
+function createcolor($pic,$c1,$c2,$c3) {
+	//get color from palette
+	$color = imagecolorexact($pic, $c1, $c2, $c3);
+	if($color==-1) {
+		//color does not exist...
+		//test if we have used up palette
+		if(imagecolorstotal($pic)>=255) {
+			//palette used up; pick closest assigned color
+			$color = imagecolorclosest($pic, $c1, $c2, $c3);
+		} else {
+			//palette NOT used up; assign new color
+			$color = imagecolorallocate($pic, $c1, $c2, $c3);
+		}
+	}
+	return $color;
+}
+
+
+
 $im = imageCreateTrueColor ($pic_max_x - $pic_min_x, $pic_max_y - $pic_min_y)
   or die("Cannot Initialize new GD image stream with $pic_max_x - $pic_min_x, $pic_max_y - $pic_min_y");
 $black_color = imagecolorallocate($im, 0, 0, 0);
@@ -55,11 +77,11 @@ for ($y = $pic_min_y; $y <= $pic_max_y; $y++) {
 	  $c = (3 * log ($i) / log ($iter - 1.0));
 	  // echo "$c\n";
 	  if ($c < 1) imagesetpixel			($im, $x - $pic_min_x, $pic_max_y - $y,
-	  		imageColorAllocate ($im, (int)(255*$c), 0, 0));
+	  		createcolor ($im, (int)(255*$c), 0, 0));
 	  else if ($c < 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y,
-	  		imageColorAllocate ($im, 255, (int)(255*$c-1.0), 0));
+	  		createcolor ($im, 255, (int)(255*$c-1.0), 0));
 	  else imagesetpixel				($im, $x - $pic_min_x, $pic_max_y - $y,
-	  		imageColorAllocate ($im, 255, 255, (int)(255*$c-2.0)));
+	  		createcolor ($im, 255, 255, (int)(255*$c-2.0)));
 	}
   }
 }
