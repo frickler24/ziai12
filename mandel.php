@@ -27,7 +27,8 @@ $max_y = $center_y + $diameter_y;
 
 $iter = $iter * $factor;
 
-// echo "<p>min_x = $min_x, max_x = $max_x, min_y = $min_y, max_y = $max_y, dia_y = $diameter_y, iter = $iter, factor = $factor</p>";
+// echo "<p>min_x = $min_x, max_x = $max_x, min_y = $min_y, max_y = $max_y, dia_x = $diameter_x, dia_y = $diameter_y, iter = $iter, factor = $factor</p>";
+// echo "<p>startc1(1) = " . $min_x+($max_x-$min_x)/$dim_x . ", startc2(1) = " . $c2=$min_y+($max_y-$min_y)/$dim_y . "</p>\n";
 
 // Only 255 colors may be defined max.
 // Redefinition of existing color leads to new color value.
@@ -49,6 +50,35 @@ function createcolor($pic,$c1,$c2,$c3) {
 	return $color;
 }
 
+function colorSchema1 ($i) {
+	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y;
+	$c = (3 * log ($i) / log ($iter - 1.0));
+	// echo "$c\n";
+	if ($c <= 1) imagesetpixel			($im, $x - $pic_min_x, $pic_max_y - $y,
+		createcolor ($im, (int)(255*$c), 0, 0));
+	else if ($c <= 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y,
+		createcolor ($im, 255, (int)(255*($c-1.0)), 0));
+	else imagesetpixel				($im, $x - $pic_min_x, $pic_max_y - $y,
+		createcolor ($im, 255, 255, (int)(255*($c-2.0))));
+}
+
+function colorSchema3 ($i) {
+	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y;
+	$c = (3 * log ($i) / log ($iter - 1.0));
+	// echo "$c\n";
+	if ($c < 1) imagesetpixel			($im, $x - $pic_min_x, $pic_max_y - $y,
+		createcolor ($im, (int)(255*$c), 255, 255));
+	else if ($c < 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y,
+		createcolor ($im, 255, (int)(255*($c-1.0)), 255));
+	else imagesetpixel				($im, $x - $pic_min_x, $pic_max_y - $y,
+		createcolor ($im, 255, 255, (int)(255*($c-2.0))));
+}
+
+function colorSchema2 ($i) {
+	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y;
+	$c = $i;// % (1<<23);
+	imagesetpixel ($im, $x - $pic_min_x, $pic_max_y - $y, createcolor ($im, ($c>>16) & 0xff, ($c>>8) & 0xff, $c & 0xff));
+}
 
 
 $im = imageCreateTrueColor ($pic_max_x - $pic_min_x, $pic_max_y - $pic_min_y)
@@ -74,14 +104,7 @@ for ($y = $pic_min_y; $y <= $pic_max_y; $y++) {
       }
     }
     if ($i < $iter) {
-	  $c = (3 * log ($i) / log ($iter - 1.0));
-	  // echo "$c\n";
-	  if ($c < 1) imagesetpixel			($im, $x - $pic_min_x, $pic_max_y - $y,
-	  		createcolor ($im, (int)(255*$c), 0, 0));
-	  else if ($c < 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y,
-	  		createcolor ($im, 255, (int)(255*$c-1.0), 0));
-	  else imagesetpixel				($im, $x - $pic_min_x, $pic_max_y - $y,
-	  		createcolor ($im, 255, 255, (int)(255*$c-2.0)));
+		colorSchema1 ($i);
 	}
   }
 }

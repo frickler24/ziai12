@@ -14,7 +14,7 @@ $debug = false;
 		border: 0px;
 		border-spacing: 0px;
 		border-collapse: collapse;
-		line-height: 0;
+		line-height: 0px;
 	}
 	
 	th, td {
@@ -73,6 +73,7 @@ if ($debug) echo ("<p>NumWorkers = $numWorkers, Anzahl Rows = $rows und Anzahl C
 if (isset($_GET["submit"])) {
 	if ($debug) echo "<p>War Submittet</p>";
 	if ($debug) print_r ($_GET);
+	$diameter_y = $diameter_x;
 	bekannteSeite ();
 } else if (isset($_GET["reset"])) {
 	if ($debug) echo "<p>War Reset</p>";
@@ -106,9 +107,21 @@ if (isset($_GET["submit"])) {
 			for ($c = 0; $c < $cols; $c++) {
 				$links = $c * ($dim_x / $cols);
 				$rechts = ($c + 1) * ($dim_x / $cols) - 1;
+				$factor = 1;
 				$str = "http://${system}/mandel.php?f=${factor}&x=${center_x}&y=${center_y}&dx=${diameter_x}&dy={$diameter_y}&i=${iter}"
 						. "&pic_min_x=${links}&pic_max_x=${rechts}&pic_min_y=${oben}&pic_max_y=${unten}";
-				echo ("<td> <img border=\"0\" src=\"${str}\"></img></td>\n");
+
+				// If user clicks to a link, which coordinates will be needed?
+				$dx2 = $diameter_x / $cols;
+				$dx2a = $dx2 / 4 * 3;
+				$dy2 = $diameter_y / $rows;
+				$dy2a = $dy2 / 3 * 4;
+				
+				$mx = ($center_x - $diameter_x) + ($diameter_x / $cols / 4 * 3) + (2 * $diameter_x / $cols * $c);
+				$my = ($center_y - $diameter_y) + ($diameter_y / $rows / 3 * 4) + (2 * $diameter_y / $rows * $r);
+
+				$link = "http://${system}/brot.php?f=${factor}&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&nw=$numWorkers&submit=Submit";
+				echo ("<td> <a href=\"${link}\"><img border=\"0\" src=\"${str}\"></img></a></td>\n");
 			}
 			echo ("</tr>\n");
 		}
@@ -239,7 +252,7 @@ function bekannteSeite() {
 						<input  type="number" name="i" maxlength="20" size="22" value="'. $iter .'">
 					</td>
 					<td style="text-align:center">
-					<input type="submit" name="reset" value="Reset" style="width:100px;">
+					<input type="submit" name="reset" value="Reset" tabindex="1" style="width:100px;">
 					</td>
 				</tr>
 		
@@ -258,7 +271,7 @@ function bekannteSeite() {
 						<input type="hidden" name="oldfac" maxlength="20" size="22" value ="'. $factor .'">
 					</td>
 					<td colspan="2" style="text-align:center">
-					<input type="submit" name="submit" value="Submit" style="width:100px;">
+					<input type="submit" name="submit" value="Submit" tabindex="1" style="width:100px;">
 					</td>
 				</tr>
 			</table>
@@ -267,6 +280,13 @@ function bekannteSeite() {
 
 }
 
+function einPaarSchoeneStellen() {
+	$a[] = "/brot.php?x=-0.74303&dx=0.01611&y=0.126433&dy=0.016&f=1&i=4000&nw=192&foo=&oldfac=1&submit=Submit";
+	$a[] = "/brot.php?x=-0.7435669&dx=0.0022878&y=0.1314023&dy=0.0022878&f=1&i=10000&nw=192&foo=&oldfac=1&submit=Submit";
+	$a[] = "/brot.php?x=-0.5985&dx=0.0032958984375&y=0.664&dy=0.0032958984375&f=1&i=1000&nw=192&foo=&oldfac=1&submit=Submit";
+	$a[] = "/brot.php?x=-0.60026267651841&dx=3.3946707844733E-7&y=0.66461459766865&dy=3.3946707844733E-7&f=1&i=50000&nw=192&foo=&oldfac=1&submit=Submit";
+	
+}
 ?>
 
 </BODY>
