@@ -1,0 +1,12 @@
+unten rechts
+http://mainfrix/mandel.php?pic_min_x=512&pic_max_x=1023&pic_min_y=0&pic_max_y=383
+
+unten links
+http://mainfrix/mandel.php?pic_min_x=0&pic_max_x=511&pic_min_y=0&pic_max_y=383
+
+oben rechts
+http://mainfrix/mandel.php?pic_min_x=512&pic_max_x=1023&pic_min_y=384&pic_max_y=767
+
+oben links
+http://mainfrix/mandel.php?pic_min_x=0&pic_max_x=511&pic_min_y=384&pic_max_y=767
+
