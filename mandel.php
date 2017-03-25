@@ -53,7 +53,7 @@ function createcolor($pic,$c1,$c2,$c3) {
 function colorSchema1 ($i) {
 	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y;
 	$c = (3 * log ($i) / log ($iter - 1.0));
-	// echo "$c\n";
+
 	if ($c <= 1) imagesetpixel			($im, $x - $pic_min_x, $pic_max_y - $y,
 		createcolor ($im, (int)(255*$c), 0, 0));
 	else if ($c <= 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y,
@@ -63,23 +63,18 @@ function colorSchema1 ($i) {
 }
 
 function colorSchema3 ($i) {
-	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y;
-	$c = (3 * log ($i) / log ($iter - 1.0));
-	// echo "$c\n";
-	if ($c < 1) imagesetpixel			($im, $x - $pic_min_x, $pic_max_y - $y,
-		createcolor ($im, (int)(255*$c), 255, 255));
-	else if ($c < 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y,
-		createcolor ($im, 255, (int)(255*($c-1.0)), 255));
-	else imagesetpixel				($im, $x - $pic_min_x, $pic_max_y - $y,
-		createcolor ($im, 255, 255, (int)(255*($c-2.0))));
+	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y, $fp;
+	$c = (5 * log ($i) / log ($iter - 1.0));
+	
+	if ($c < 0) $c = 0.0;
+	if ($c > 5) $c = 5.0;
+	
+	if ($c <= 1) imagesetpixel ($im, $x - $pic_min_x, $pic_max_y - $y, 		createcolor ($im, (int)(255*$c), 0, 0));
+	else if ($c <= 2) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y, createcolor ($im, 255, (int)(255*($c-1.0)), 0));
+	else if ($c <= 3) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y, createcolor ($im, 255, 255, (int)(255*($c-2.001))));
+	else if ($c <= 4) imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y, createcolor ($im, 255, (int)(255*(4.0 - $c)), 255));
+	else 			  imagesetpixel	($im, $x - $pic_min_x, $pic_max_y - $y, createcolor ($im, (int)(255*($c - 4.0)), 255, 255));
 }
-
-function colorSchema2 ($i) {
-	global $iter, $im, $x, $pic_min_x, $pic_max_x, $y, $pic_min_y, $pic_max_y;
-	$c = $i;// % (1<<23);
-	imagesetpixel ($im, $x - $pic_min_x, $pic_max_y - $y, createcolor ($im, ($c>>16) & 0xff, ($c>>8) & 0xff, $c & 0xff));
-}
-
 
 $im = imageCreateTrueColor ($pic_max_x - $pic_min_x, $pic_max_y - $pic_min_y)
   or die("Cannot Initialize new GD image stream with $pic_max_x - $pic_min_x, $pic_max_y - $pic_min_y");
@@ -104,11 +99,11 @@ for ($y = $pic_min_y; $y <= $pic_max_y; $y++) {
       }
     }
     if ($i < $iter) {
-		colorSchema1 ($i);
+		colorSchema3 ($i);
 	}
   }
 }
- 
+
 imagepng($im);
 imagedestroy($im);
 ?>

@@ -28,7 +28,7 @@ $debug = false;
 <h1>Hier ist ein Ausschnitt der Mandelbrotmenge</h1>
 <?php
 
-$system = "Mainfrix";	// This will be an array later
+$system = "frickler.eichler-web.de";	// This will be an array later
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
@@ -73,7 +73,7 @@ if ($debug) echo ("<p>NumWorkers = $numWorkers, Anzahl Rows = $rows und Anzahl C
 if (isset($_GET["submit"])) {
 	if ($debug) echo "<p>War Submittet</p>";
 	if ($debug) print_r ($_GET);
-	$diameter_y = $diameter_x;
+	if ($diameter_x != 1.5) $diameter_y = $diameter_x;
 	bekannteSeite ();
 } else if (isset($_GET["reset"])) {
 	if ($debug) echo "<p>War Reset</p>";
@@ -113,9 +113,9 @@ if (isset($_GET["submit"])) {
 
 				// If user clicks to a link, which coordinates will be needed?
 				$dx2 = $diameter_x / $cols;
-				$dx2a = $dx2 / 4 * 3;
+				$dx2a = $dx2;// / 4 * 3;
 				$dy2 = $diameter_y / $rows;
-				$dy2a = $dy2 / 3 * 4;
+				$dy2a = $dy2;// / 3 * 4;
 				
 				$mx = ($center_x - $diameter_x) + ($diameter_x / $cols / 4 * 3) + (2 * $diameter_x / $cols * $c);
 				$my = ($center_y - $diameter_y) + ($diameter_y / $rows / 3 * 4) + (2 * $diameter_y / $rows * $r);
@@ -167,32 +167,24 @@ function neueSeite() {
 		
 				<tr>
 					<td valign="center">
-						<label for="f">Zoom Factor</label>
-					</td>
-					<td valign="top">
-						<input  type="text" name="f" maxlength="20" size="22" value="1">
-					</td>
-					<td valign="center">
 						<label for="i">Max iterations to black</label>
 					</td>
 					<td valign="center">
 						<input  type="number" name="i" maxlength="20" size="22" value="100">
 					</td>
-				</tr>
-		
-				<tr>
 					<td valign="center">
 						<label for="nw"># worker procs</label>
 					</td>
 					<td valign="top">
 						<input  type="number" name="nw" maxlength="20" size="22" value="192">
 					</td>
+				</tr>
+				<tr>
 					<td valign="center">
-						<label for="foo"></label>
+						<label for="i">&nbsp;</label>
 					</td>
-					<td valign="center">
-						<input  type="number" name="" maxlength="20" size="22" value="">
-					</td>
+				</tr>
+				<tr>
 					<td style="text-align:center">
 					<input type="submit" name="submit" value="Submit" style="width:100px;">
 					</td>
@@ -240,39 +232,31 @@ function bekannteSeite() {
 		
 				<tr>
 					<td valign="center">
-						<label for="f">Zoom Factor</label>
-					</td>
-					<td valign="top">
-						<input  type="text" name="f" maxlength="20" size="22" value="'. $factor .'">
-					</td>
-					<td valign="center">
 						<label for="i">Max iterations to black</label>
 					</td>
 					<td valign="center">
 						<input  type="number" name="i" maxlength="20" size="22" value="'. $iter .'">
 					</td>
-					<td style="text-align:center">
-					<input type="submit" name="reset" value="Reset" tabindex="1" style="width:100px;">
-					</td>
-				</tr>
-		
-				<tr>
 					<td valign="center">
 						<label for="nw"># worker procs</label>
 					</td>
 					<td valign="top">
 						<input  type="number" name="nw" maxlength="20" size="22" value="'. $rows * $cols .'">
 					</td>
+				</tr>
+				<tr>
 					<td valign="center">
-						<label for="foo"></label>
+						<p></p>
 					</td>
-					<td valign="center">
-						<input  type="number" name="foo" maxlength="20" size="22" value="">
-						<input type="hidden" name="oldfac" maxlength="20" size="22" value ="'. $factor .'">
-					</td>
+				</tr>
+				<tr>
 					<td colspan="2" style="text-align:center">
 					<input type="submit" name="submit" value="Submit" tabindex="1" style="width:100px;">
 					</td>
+					<td style="text-align:center">
+					<input type="submit" name="reset" value="Reset" tabindex="1" style="width:100px;">
+					</td>
+
 				</tr>
 			</table>
 		</form>
