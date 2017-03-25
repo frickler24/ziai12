@@ -1,10 +1,10 @@
 #!/bin/bash
-ANZAHL=${1:-100}
+ANZAHL=${2:-100}
+TARGET=${1:-localhost}
 
 while true ; do {
 	for (( a=0 ; a < $ANZAHL ; a++ )) ; do
-		# curl -s -k https://raschef > /dev/null &
-		(curl -s -k https://raschef/temp.png > /dev/null ; echo -n ".") &
+		(curl -s -k $TARGET > /dev/null ; echo -n ".") &
 		echo -n +
 	done
 	exit 0
