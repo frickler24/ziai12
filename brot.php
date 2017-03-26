@@ -29,6 +29,7 @@ $debug = false;
 <?php
 
 $system = "frickler.eichler-web.de";	// This will be an array later
+$system = "localhost:8080";	// This will be an array later
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
