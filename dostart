@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "Starte den consul-Server (das kann auch mal auf mainfrix verlegt werden)"
+docker run -p 192.168.21.44:8500:8500 -d --rm --name con1 -h Baerchen nimblestratus/rpi-consul -server -advertise 192.168.21.44 -bootstrap-expect 1
+
+echo "starte den swarm manager"
+docker run -d -p 4000:4000 hypriot/rpi-swarm manage -H :4000 --replication --advertise 192.168.21.44:4000 consul://192.168.21.44:8500
+
+echo "starte ein paar Worker"
+docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
+docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
+docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
+docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500

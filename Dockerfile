@@ -5,11 +5,23 @@ MAINTAINER Frickler24 <frickler24@frickler24.de>
 
 RUN apt-get update && apt-get -y upgrade \
 	&& apt-get -y install --no-install-recommends --no-install-suggests \
+		apt-utils \
+	&& apt-get -y install --no-install-recommends --no-install-suggests \
 		php5-fpm php5-cgi php5-cli php5-gd php5-common \
 		nginx \
 		vim \
 		net-tools \
+	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
+
+# optional add inettools
+RUN apt-get install -y \
+	inetutils-ftp \
+	inetutils-ftpd \
+	inetutils-inetd \
+	inetutils-ping \
+	inetutils-tools \
+	inetutils-traceroute
 
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -25,7 +37,6 @@ ADD startfiles /tmp/startfiles
 # Exposed ports HTTP(S)
 EXPOSE 80 443
 
-ENTRYPOINT sh /tmp/startfiles
+# ENTRYPOINT /tmp/startfiles
 
-CMD ["sh", "/tmp/startfiles"]
-
+CMD ["/tmp/startfiles"]
