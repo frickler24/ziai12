@@ -1,13 +1,21 @@
 #!/bin/sh
 
 echo "Starte den consul-Server (das kann auch mal auf mainfrix verlegt werden)"
-docker run -p 192.168.21.44:8500:8500 -d --rm --name con1 -h Baerchen nimblestratus/rpi-consul -server -advertise 192.168.21.44 -bootstrap-expect 1
+####### Auf dem Raspi
+# docker run -p 192.168.21.44:8500:8500 -d --rm --name con1 -h Baerchen nimblestratus/rpi-consul -server -advertise 192.168.21.44 -bootstrap-expect 1
+####### Oder auf Mainfrix
+# docker run -p :8500:8500 -d --name con -h Mainfrix progrium/consul -server -advertise 192.168.21.12 -bootstrap -ui-dir /ui
 
 echo "starte den swarm manager"
-docker run -d -p 4000:4000 hypriot/rpi-swarm manage -H :4000 --replication --advertise 192.168.21.44:4000 consul://192.168.21.44:8500
+####### Auf dem Raspi
+# docker run -d -p 4000:4000 --name=chef hypriot/rpi-swarm manage -H :4000 --replication --advertise 192.168.21.44:4000 consul://192.168.21.12:8500
+####### Oder auf Mainfrix
+# docker run -d -p 4000:4000 --name=chef swarm manage -H :4000 --replication --advertise 192.168.21.12:4000 consul://192.168.21.12:8500
 
 echo "starte ein paar Worker"
-docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
-docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
-docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
-docker run -d hypriot/rpi-swarm join --advertise=192.168.21.44:2357 consul://192.168.21.44:8500
+
+####### Auf dem Raspi
+# docker run -d --name=slave hypriot/rpi-swarm join --advertise=192.168.21.44:2375 consul://192.168.21.12:8500
+####### Oder auf Mainfrix
+# docker run -d --name=slave swarm join --advertise=192.168.21.12:2375 consul://192.168.21.12:8500
+
