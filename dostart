@@ -19,3 +19,18 @@ echo "starte ein paar Worker"
 ####### Oder auf Mainfrix
 # docker run -d --name=slave swarm join --advertise=192.168.21.12:2375 consul://192.168.21.12:8500
 
+echo "starte den Rancher Server"
+
+####### Auf dem Raspi
+# docker run -d --name=rancher -p 8080:8080 ???hypriot/rancher/server 
+####### Oder auf Mainfrix
+# docker run -d --name=rancher -p 8080:8080 rancher/server:stable 
+
+echo "starte den Rancher Agent"
+
+####### Auf dem Raspi
+# docker run -d --name=rancher -p 8080:8080 ???hypriot/rancher/server 
+####### Oder auf Mainfrix
+# sudo docker run -e CATTLE_AGENT_IP="192.168.21.44"  -e CATTLE_HOST_LABELS='Hostname=Baerchen'  -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.2.1 http://Mainfrix:8080/v1/scripts/99CC598255EC2479883D:1483142400000:pDjIhGLRYUXtmTLEQC1Q4VT1IJw
+
+
