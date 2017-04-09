@@ -16,7 +16,7 @@
 working. Further configuration is required.</p>
 </p>
 <p>You run currently at
-<?php echo $HOSTNAME ?>
+<?php passthru ("/bin/hostname"); ?>
 </p>
 <p><pre><?php var_export($_SERVER)?></pre></p>
 <p>For online documentation and support please refer to

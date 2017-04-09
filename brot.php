@@ -28,8 +28,9 @@ $debug = false;
 <h1>Hier ist ein Ausschnitt der Mandelbrotmenge</h1>
 <?php
 
-$system = "frickler.eichler-web.de";	// This will be an array later
-$system = "localhost:8080";	// This will be an array later
+$system = "http://frickler.eichler-web.de";	// This will be an array later
+$system = "http://localhost:8080";	// This will be an array later
+$system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";	// This will be an array later
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
@@ -105,12 +106,14 @@ if (isset($_GET["submit"])) {
 			$oben = $r * ($dim_y / $rows);
 			$unten = ($r + 1) * ($dim_y / $rows) - 1;
 			echo ("<tr>");
+			$currentTime = time();
+
 			for ($c = 0; $c < $cols; $c++) {
 				$links = $c * ($dim_x / $cols);
 				$rechts = ($c + 1) * ($dim_x / $cols) - 1;
 				$factor = 1;
-				$str = "http://${system}/mandel.php?f=${factor}&x=${center_x}&y=${center_y}&dx=${diameter_x}&dy={$diameter_y}&i=${iter}"
-						. "&pic_min_x=${links}&pic_max_x=${rechts}&pic_min_y=${oben}&pic_max_y=${unten}";
+				$str = "${system}/mandel.php?f=${factor}&x=${center_x}&y=${center_y}&dx=${diameter_x}&dy={$diameter_y}&i=${iter}"
+						. "&pic_min_x=${links}&pic_max_x=${rechts}&pic_min_y=${oben}&pic_max_y=${unten}&rnd=${currentTime}";
 
 				// If user clicks to a link, which coordinates will be needed?
 				$dx2 = $diameter_x / $cols;
@@ -121,7 +124,7 @@ if (isset($_GET["submit"])) {
 				$mx = ($center_x - $diameter_x) + ($diameter_x / $cols / 4 * 3) + (2 * $diameter_x / $cols * $c);
 				$my = ($center_y - $diameter_y) + ($diameter_y / $rows / 3 * 4) + (2 * $diameter_y / $rows * $r);
 
-				$link = "http://${system}/brot.php?f=${factor}&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&nw=$numWorkers&submit=Submit";
+				$link = "${system}/brot.php?f=${factor}&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&nw=$numWorkers&submit=Submit";
 				echo ("<td> <a href=\"${link}\"><img border=\"0\" src=\"${str}\"></img></a></td>\n");
 			}
 			echo ("</tr>\n");
