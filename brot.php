@@ -3,6 +3,7 @@ header("Content-Type: text/html");
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 $debug = false;
+$debug = true;
 ?>
 <!DOCTYPE HTML>
 <HTML lang="de">
@@ -28,9 +29,9 @@ $debug = false;
 <h1>Hier ist ein Ausschnitt der Mandelbrotmenge</h1>
 <?php
 
-$system = "http://frickler.eichler-web.de";	// This will be an array later
+// $system = "http://frickler.eichler-web.de";	// This will be an array later
+// $system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";	// This will be an array later
 $system = "http://localhost:8080";	// This will be an array later
-$system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";	// This will be an array later
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
