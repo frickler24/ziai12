@@ -1,9 +1,14 @@
-sudo sh -c "echo deb [arch=armhf] https://apt.dockerproject.org/repo raspbian-jessie main > docker.list"
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F76221572C52609D
-sudo apt update
-sudo apt install docker-engine
-sudo vi /etc/systemd/system/sockets.target.wants/docker.socket
-sudo systemctl daemon-reload
-sudo systemctl restart docker.socket docker.service
-docker --version
+# sudo sh -c "echo deb [arch=armhf] https://apt.dockerproject.org/repo raspbian-jessie main > /etc/apt/sources.list.d/docker.list"
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F76221572C52609D
+# sudo apt update
+# sudo apt install docker-engine
+# sudo vi /etc/systemd/system/sockets.target.wants/docker.socket
+# Und was soll da bitteschön eingegeben werden?
+# sudo systemctl daemon-reload
+# sudo systemctl restart docker.socket docker.service
+# docker --version
 
+
+#oder
+
+curl -sSL https://get.docker.com | sh

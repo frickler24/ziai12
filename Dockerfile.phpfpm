@@ -1,0 +1,17 @@
+# Raspbian Jessie installation
+FROM mglaeske/raspi-php
+
+MAINTAINER Frickler24 <frickler24@frickler24.de>
+RUN apt-get update 
+RUN apt-get -y upgrade 
+RUN apt-get -y install --no-install-recommends --no-install-suggests php5-gd
+
+# Add neccessary files
+# (in an environment with separated php-fpm,
+# all php files must be available in that environment also).
+ADD _var_www_html_test.php /var/www/html/test.php
+ADD mandel.php /var/www/html/mandel.php
+ADD brot.php /var/www/html/brot.php
+ADD _usr_local_etc_php-fpm.d_www.conf /usr/local/etc/php-fpm.d/www.conf
+ADD _usr_local_etc_php_php.ini /usr/local/etc/php/php.ini
+
