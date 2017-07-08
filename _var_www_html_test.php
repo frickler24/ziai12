@@ -18,6 +18,15 @@ working. Further configuration is required.</p>
 <p>You run currently at
 <?php passthru ("/bin/hostname"); ?>
 </p>
+<p>
+Check for php5-gd library:
+<br />
+<?php
+$testGD = get_extension_funcs("gd"); // Grab function list
+if (!$testGD)
+     echo "GD not even installed.";
+else echo"<pre>".print_r($testGD,true)."</pre>";?>
+</p>
 <p><pre><?php var_export($_SERVER)?></pre></p>
 <p>For online documentation and support please refer to
 <a href="http://nginx.org/">nginx.org</a>.<br/>
@@ -27,3 +36,4 @@ Commercial support is available at
 <p><em>Thank you for using nginx.</em></p>
 </body>
 </html>
+
