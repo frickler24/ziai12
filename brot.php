@@ -32,7 +32,7 @@ $debug = false;
 // $system = "http://frickler.eichler-web.de";	// Later this will be an array
 // $system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";	// Later this will be an array
 // $system = "http://localhost:8080";	// Later this will be an array
-$system = "http://172.17.0.1:8080";	// Code for docker service vIP
+$system = "http://172.17.0.1:8080";	// Coding for docker service vIP
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
