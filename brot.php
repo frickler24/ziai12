@@ -51,6 +51,8 @@ if (isset($_GET["dy"])) $diameter_y = $_GET["dy"]; else $diameter_y = $diameter_
 if ($oldfac != $factor) $diameter_y /= ($factor / $oldfac);
 
 $iter =  (isset($_GET["i"]))? $_GET["i"] : 100;
+if ($iter < 3) $iter = 3;       // Otherwise we get trouble with color managent
+
 $numWorkers = (isset($_GET["nw"]))? $_GET["nw"] : 4 * 3;
 
 if ($numWorkers % 4 != 0 || $numWorkers % 3 != 0) {
