@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main (int ac, char**av) {
-	printf ("Hello world!\n");
-	printf ("Congratulations, your docker environment seems to run on an arm architecture.\n");
+	printf ("Hallo Welt!\n");
+	printf ("Herzlichen Glückwunsch: Deine Docker Infrastruktur läuft auf der arm Architektur!\n");
 	return 0;
 }
