@@ -1,0 +1,29 @@
+Originalkarte (8GB SDHC SanDisk Class 4
+
+Schreiben:
+Mainfrix Noobs_ZIAI12 # dd if=Noobs_komplett_8GB of=/dev/sde bs=16M
+174+0 Datensätze ein
+174+0 Datensätze aus
+2919235584 bytes (2,9 GB, 2,7 GiB) copied, 42,2677 s, 69,1 MB/s
+212+0 Datensätze ein
+212+0 Datensätze aus
+3556769792 bytes (3,6 GB, 3,3 GiB) copied, 244,104 s, 14,6 MB/s
+287+0 Datensätze ein
+287+0 Datensätze aus
+4815060992 bytes (4,8 GB, 4,5 GiB) copied, 532,176 s, 9,0 MB/s
+473+1 Datensätze ein
+473+1 Datensätze aus                                                                                                                                        
+7948206080 bytes (7,9 GB, 7,4 GiB) copied, 1396,88 s, 5,7 MB/s                                                                                              
+473+1 Datensätze ein                                                                                                                                        
+473+1 Datensätze aus                                                                                                                                        
+7948206080 bytes (7,9 GB, 7,4 GiB) copied, 1396,88 s, 5,7 MB/s                 
+
+
+Lesen:
+Mainfrix Noobs_ZIAI12 # dd if=/dev/sde of=/dev/null bs=16M count=100
+dd: warning: partial read (14417920 bytes); suggest iflag=fullblock                                                                                         
+99+1 Datensätze ein                                                                                                                                         
+99+1 Datensätze aus                                                                                                                                         
+1675362304 bytes (1,7 GB, 1,6 GiB) copied, 91,2315 s, 18,4 MB/s
+
+                                                                                                                                                                    

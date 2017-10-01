@@ -32,6 +32,7 @@ $debug = false;
 // $system = "http://frickler.eichler-web.de";	// Later this will be an array
 // $system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";	// Later this will be an array
 $system = "http://localhost:8080";	// Later this will be an array
+// $system = "http://172.17.0.1:8080";	// Coding for docker service vIP
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
@@ -50,6 +51,8 @@ if (isset($_GET["dy"])) $diameter_y = $_GET["dy"]; else $diameter_y = $diameter_
 if ($oldfac != $factor) $diameter_y /= ($factor / $oldfac);
 
 $iter =  (isset($_GET["i"]))? $_GET["i"] : 100;
+if ($iter < 3) $iter = 3;       // Otherwise we get trouble with color managent
+
 $numWorkers = (isset($_GET["nw"]))? $_GET["nw"] : 4 * 3;
 
 if ($numWorkers % 4 != 0 || $numWorkers % 3 != 0) {
