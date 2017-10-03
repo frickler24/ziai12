@@ -28,6 +28,8 @@ if (!$testGD)
 else echo"<pre>".print_r($testGD,true)."</pre>";?>
 </p>
 <p><pre><?php var_export($_SERVER)?></pre></p>
+<p><pre><?php echo $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"] . "\n";?></pre></p>
+<p><pre><?php echo "HTTP_HOST=" . $_SERVER["HTTP_HOST"] . "\n";?></pre></p>
 <p>For online documentation and support please refer to
 <a href="http://nginx.org/">nginx.org</a>.<br/>
 Commercial support is available at
