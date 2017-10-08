@@ -1,4 +1,0 @@
-#!/bin/sh
-/usr/sbin/php5-fpm
-exec /usr/sbin/nginx -g 'daemon off;'
-# exec /bin/bash
