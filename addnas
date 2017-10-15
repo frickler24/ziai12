@@ -5,7 +5,7 @@ rm -f /home/pi/ziai12/nas
 mkdir -p /home/pi/nas
 (grep -v "^\/\/192\.168\.178\.1\/RuV-NAS" /etc/fstab ; \
 echo "//192.168.178.1/RuV-NAS	/home/pi/nas	cifs	credentials=/home/pi/ziai12/.credentials,uid=1000,gid=1000,sec=ntlm,noauto,iocharset=utf8	0	0") \
-| sudo tee /etc/fstab
+| sudo tee /etc/fstab > /dev/null
 sudo mount /home/pi/nas
 chmod 755 /home/pi/nas
 mkdir -p /home/pi/nas/Jetflash-Transcend32G-00/ziai12
