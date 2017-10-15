@@ -14,10 +14,10 @@ RUN mkdir -p /var/www/html
 
 # Hier stehen ein paar Parameter für phpfpm,
 # z.B. dass er über Port 9000 auf phpfpm erreichbar sein soll.
-ADD _usr_local_etc_php-fpm.d_www.conf /etc/php5/php-fpm.conf
+COPY _usr_local_etc_php-fpm.d_www.conf /etc/php5/php-fpm.conf
 
 # Die maximale Laufzeit für php-Programme wird hierin gesetzt
-ADD _etc_php5_php.ini /etc/php5/php.ini
+COPY _etc_php5_php.ini /etc/php5/php.ini
 
 # Jetzt kommt etwas Überraschendes:
 # Alle PHP-Dateien, die zur Ausführung gelangen sollen,
@@ -28,13 +28,13 @@ ADD _etc_php5_php.ini /etc/php5/php.ini
 
 # Hier lesen wir php5-GD Parameter (Graphics develop)
 # und PHP-Standard-Params, wenn wir phpfpm richtig konfiguriert haben
-ADD _var_www_html_test.php /var/www/html/test.php
+COPY _var_www_html_test.php /var/www/html/test.php
 
 # Das Berechnen einer einzelnen Mandelbrot-Kachel
-ADD mandel.php /var/www/html/mandel.php
+COPY mandel.php /var/www/html/mandel.php
 
 # Das gesamte Brötchen berechnen (über mandel.php)
-ADD brot.php /var/www/html/brot.php
+COPY brot.php /var/www/html/brot.php
 
 EXPOSE 9000
 
