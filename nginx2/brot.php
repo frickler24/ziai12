@@ -6,6 +6,7 @@ $debug = true;
 $debug = false;
 ?>
 <!DOCTYPE HTML>
+<meta http-equiv="refresh" content="5" >
 <HTML lang="de">
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
