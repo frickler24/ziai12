@@ -6,7 +6,12 @@ $debug = true;
 $debug = false;
 ?>
 <!DOCTYPE HTML>
-<meta http-equiv="refresh" content="5" >
+<?php
+$refresh = false;
+if (isset($_GET["refresh"])) 
+	if ($refresh = ($_GET["refresh"] == "y"))
+		echo '<meta http-equiv="refresh" content="5" > ';
+?>
 <HTML lang="de">
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -55,7 +60,7 @@ if ($oldfac != $factor) $diameter_y /= ($factor / $oldfac);
 $iter =  (isset($_GET["i"]))? $_GET["i"] : 100;
 if ($iter < 3) $iter = 3;       // Otherwise we get trouble with color managent
 
-$numWorkers = (isset($_GET["nw"]))? $_GET["nw"] : 4 * 3;
+$numWorkers = (isset($_GET["nw"]))? $_GET["nw"] : 192;
 
 if ($numWorkers % 4 != 0 || $numWorkers % 3 != 0) {
 	$numWorkers = (int)($numWorkers / 12);
@@ -195,6 +200,9 @@ function neueSeite() {
 					</td>
 				</tr>
 				<tr>
+					<td colspan="4" style="text-align:center">
+					<input type="checkbox" name="refresh" value="y" >Auto-Refresh
+					</td>
 					<td style="text-align:center">
 					<input type="submit" name="submit" value="Submit" style="width:100px;">
 					</td>
@@ -260,7 +268,11 @@ function bekannteSeite() {
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="text-align:center">
+					<td colspan="5" style="text-align:center">
+					<input type="checkbox" name="refresh" value="y" foo="bar3" ' 
+						. ((isset($_GET["refresh"]) && ($_GET["refresh"] == "y"))? 'checked="checked" ' : 'foo="bar4" ') . '>Auto-Refresh
+					</td>
+					<td style="text-align:center">
 					<input type="submit" name="submit" value="Submit" tabindex="1" style="width:100px;">
 					</td>
 					<td style="text-align:center">
