@@ -269,8 +269,8 @@ function bekannteSeite() {
 				</tr>
 				<tr>
 					<td colspan="5" style="text-align:center">
-					<input type="checkbox" name="refresh" value="y" foo="bar3" ' 
-						. ((isset($_GET["refresh"]) && ($_GET["refresh"] == "y"))? 'checked="checked" ' : 'foo="bar4" ') . '>Auto-Refresh
+					<input type="checkbox" name="refresh" value="y" ' 
+						. ((isset($_GET["refresh"]) && ($_GET["refresh"] == "y"))? 'checked="checked" ' : '') . '>Auto-Refresh
 					</td>
 					<td style="text-align:center">
 					<input type="submit" name="submit" value="Submit" tabindex="1" style="width:100px;">
