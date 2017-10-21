@@ -3,6 +3,9 @@ header("Content-Type: image/png");
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+$paintACircle = FALSE;
+$paintACircle = TRUE;
+
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
 $dim_y=$dim_x / 4 * 3;
@@ -104,6 +107,54 @@ for ($y = $pic_min_y; $y <= $pic_max_y; $y++) {
   }
 }
 
+
+if ($paintACircle) {
+	$red = 0;
+	$green = 0;
+	$blue = 0;
+	$host = gethostname();
+
+	switch ($host[0]) {
+	case "a":
+	case "b":
+	case "c":
+	case "d":
+	case "e":
+		$green = 255;
+	break;
+	case "f":
+	case "g":
+	case "h":
+	case "i":
+	case "j":
+		$blue = 255;
+	break;
+	case "k":
+	case "l":
+	case "m":
+	case "n":
+	case "o":
+		$red = 255;
+	break;
+	case "p":
+	case "q":
+	case "r":
+	case "s":
+	case "t":
+		$green = $red = $blue = 255;
+	break;
+	default:
+	break;
+	}
+
+	// determine center and width of circle to draw
+	$myCenterX = ($pic_max_x - $pic_min_x)/2;
+	$myCenterY = ($pic_max_y - $pic_min_y)/2;
+	$myWidth = min ($pic_max_x - $pic_min_x, $pic_max_y - $pic_min_y) / 4;
+
+	$circleColor = createcolor ($im, $red, $green, $blue);
+	imagefilledellipse ($im, $myCenterX, $myCenterY, $myWidth, $myWidth, $circleColor);
+}
 imagepng($im);
 imagedestroy($im);
 ?>
