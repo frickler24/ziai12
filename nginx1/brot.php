@@ -135,7 +135,8 @@ if (isset($_GET["submit"])) {
 				$mx = ($center_x - $diameter_x) + ($diameter_x / $cols / 4 * 3) + (2 * $diameter_x / $cols * $c);
 				$my = ($center_y - $diameter_y) + ($diameter_y / $rows / 3 * 4) + (2 * $diameter_y / $rows * $r);
 
-				$link = "${system}/brot.php?f=${factor}&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&nw=$numWorkers&submit=Submit";
+				$link = "${system}/brot.php?f=${factor}&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&refresh="
+					. ($refresh? 'y':'n') . "&nw=$numWorkers&submit=Submit";
 				echo ("<td> <a href=\"${link}\"><img border=\"0\" src=\"${str}\"></img></a></td>\n");
 			}
 			echo ("</tr>\n");
