@@ -112,36 +112,46 @@ if ($paintACircle) {
 	$red = 0;
 	$green = 0;
 	$blue = 0;
-	$host = gethostname();
+	$host = gethostname();	// in docker, hostnames are hex numbers in text form
 
 	switch ($host[0]) {
 	case "a":
-	case "b":
-	case "c":
-	case "d":
+	case "g":
+	case "k":
+	case "p":
 	case "e":
+	case "0":
+	case "1":
 		$green = 255;
 	break;
+	case "b":
 	case "f":
-	case "g":
 	case "h":
 	case "i":
 	case "j":
+	case "2":
+	case "3":
 		$blue = 255;
 	break;
-	case "k":
+	case "c":
 	case "l":
 	case "m":
 	case "n":
 	case "o":
+	case "4":
+	case "5":
 		$red = 255;
 	break;
-	case "p":
+	case "d":
 	case "q":
 	case "r":
 	case "s":
 	case "t":
-		$green = $red = $blue = 255;
+	case "6":
+	case "7":
+		$green = rand (0, 255);
+		$red   = rand (0, 255);
+		$blue  = rand (0, 255);
 	break;
 	default:
 	break;
