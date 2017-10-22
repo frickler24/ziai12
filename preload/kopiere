@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mkdir -p ~/.ssh
+cd ~/.ssh
+chmod 700 .
+cp /mnt/preload/* .
+chmod 600 *
+exit 0
+
+
