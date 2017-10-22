@@ -6,4 +6,4 @@ WLANruv2017
 docker@frickler24.de
 Das mit Shigger
 
-
+sudo blinken&
