@@ -36,10 +36,16 @@ if (isset($_GET["refresh"]))
 <?php
 
 // $system = "http://frickler.eichler-web.de";	// Later this will be an array
-// $system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";	// Later this will be an array
-// $system = "http://localhost:8080";	// Later this will be an array
-$system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
+// $system = "http://ebmandel.eu-central-1.elasticbeanstalk.com";
+// $system = "http://localhost:8080";
 // $system = "http://172.17.0.1:8080";	// Coding for docker service vIP
+
+$system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
+if (strpos ($_SERVER["HTTP_HOST"], ":") === false) {
+    $system .= ":9080";
+}
+
+echo "<p>New generated link to system is $system</p>";
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
