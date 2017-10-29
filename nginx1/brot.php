@@ -41,9 +41,11 @@ if (isset($_GET["refresh"]))
 // $system = "http://172.17.0.1:8080";	// Coding for docker service vIP
 
 $system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
-if (strpos ($_SERVER["HTTP_POST"], ":") === false) {
+if (strpos ($_SERVER["HTTP_HOST"], ":") === false) {
     $system .= ":9080";
 }
+
+echo "<p>New generated link to system is $system</p>";
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
