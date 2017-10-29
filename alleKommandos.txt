@@ -3,6 +3,18 @@ sudo passwd pi
 sudo apt update
 sudo apt upgrade -y
 
+chromium-browser https://github.com/frickler24/ziai12 2>/dev/null &
+
+cd ~ ; git clone https://github.com/frickler24/ziai12.git ; ls l
+cd ~/ziai12
+ls -l
+geany alleKommandos.txt &     # muss ja schon offen sein
+
+sudo apt install nginx
+chromium-browser http://localhost
+sudo geany /var/www/html/index.nginx-debian.html
+
+
 sudo apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 echo "deb [arch=armhf] https://download.docker.com/linux/debian \
@@ -13,5 +25,132 @@ sudo usermod -aG docker pi
 
 sudo docker run armhf/hello-world
 
-Hier müssen noch die lxterminal... cmds rein
+docker run -it arm32v6/alpine /bin/sh
+
+lxterminal -e docker run arm32v6/alpine sh -c "while true; do date ; sleep 1 ; done"
+docker ps
+Hier müssten noch die anderen docker pause / unpause Statement eingebuat werden mit Parametrisierung
+
+docker images
+docker image ls
+chromium-browser https://hub.docker.com/explore 2>/dev/null &
+
+docker run -it frickler24/rpi-hello-world
+docker run -it tutum/hello-world
+docker image inspect tutum/hello-world | grep Archit
+
+docker image ls
+
+cd ~/ziai12/arm
+geany hello.c Dockerfile &
+make
+ls -l
+docker build -t mein-erstes-image .
+docker run mein-erstes-image
+
+cd ~/ziai12/nginx1
+geany Dockerfile.fromAlpineLocalNGINX &
+docker build -t myng -f Dockerfile.fromAlpineLocalNGINX .
+docker images | head
+
+docker run -d --name webserver -p 8080:80 myng
+chromium-browser http://localhost:8080/test.html 2>/dev/null &
+docker logs webserver
+
+
+for i in {0..9} ; do docker run -d --name webs$i -p 808$i:80 myng ; done
+for i in {0..9} ; do chromium-browser "http://localhost:808$i/brot.php?f=1&x=-0.58935546875&y=0.55902777777778&dx=0.005859375&dy=0.0078125&i=200&refresh=y&nw=192&submit=Submit" 2>/dev/null & done
+for i in {0..9} ; do docker rm -f webs$i ; done
+
+
+cd ~/ziai12/nginx2
+docker build -t mandel -f Dockerfile.nginx .
+docker build -t fpmimage -f Dockerfile.phpfpm .
+docker images
+
+docker run -d -p 8080:80 mandel
+docker logs $(docker ps -n 1 -q)
+
+docker run -d fpmimage
+docker run -d -p 7080:80 mandel
+docker logs $(docker ps -n 1 -q)
+
+docker network create meinNetz
+docker network ls
+docker network inspect meinNetz
+
+docker rm -f $(docker ps -aq)
+docker run -d --network meinNetz --network-alias phpfpm --name fpm fpmimage
+docker inspect fpm 
+docker run -d --name webserver -p 8080:80 --network meinNetz mandel
+chromium-browser http://localhost:8080/test.php 2>/dev/null &
+curl -s http://localhost:8080/test.php | grep -C 2 "You run"
+
+docker swarm init --advertise-addr wlan0
+docker swarm join-token manager
+cd ~/ziai12; ./addnas
+ls -lL nas
+
+# Den Block noch mal checken am NAS
+docker node ls
+docker node ls -q
+docker swarm join-token manager
+docker swarm join-token manager > nas/manager-$(docker node ls -q)
+docker swarm join-token worker > nas/worker-$(docker node ls -q)
+
+cat nas/w*
+cat nas/m*
+
+for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > nas/$typ-$(docker node ls -q) ; done         # Noch mal checken am NAS
+
+docker service create \
+--name=viz \
+--publish=8081:8080/tcp \
+--constraint=node.role==manager \
+--detach=false \
+--mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+alexellis2/visualizer-arm
+
+docker service ls
+docker service ps viz
+
+docker network create --driver=overlay schwarmNetz
+docker network ls
+docker network inspect schwarmNetz
+
+docker service create \
+--network schwarmNetz \
+--mode global \
+--name phpfpm \
+--detach=false \
+fpmimage
+
+docker service create \
+--network schwarmNetz \
+--mode replicated --replicas 4 \
+--publish 8080:80/tcp \
+--name mbr \
+--detach=false \
+mandel
+
+chromium-browser http://172.17.0.1:8080/brot.php 2>/dev/null &
+
+docker pull frickler24/mandel:1.0.1 
+docker pull frickler24/mandel:1.0.3 
+docker pull frickler24/fpmimage:1.0.1 
+docker pull frickler24/fpmimage:1.0.3 
+
+docker node update --availability drain Lutz
+docker service ps mbr
+docker service ps phpfpm
+docker service scale mbr=12
+
+docker service rm phpfpm mbr
+
+docker service update --update-delay 1s --update-parallelism 4 --image frickler24/fpmimage:1.0.1 --detach=true phpfpm
+docker service update --update-delay 1s --update-parallelism 4 --image frickler24/mandel:1.0.1 --detach=true mbr
+
+docker service update --update-delay 1m --update-parallelism 1 --image frickler24/fpmimage:1.0.3 --detach=false phpfpm
+docker service update --rollback phpfpm
+docker service update --update-delay 1s --update-parallelism 4 --image frickler24/fpmimage:1.0.1 --detach=true phpfpm
 
