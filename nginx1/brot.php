@@ -41,7 +41,7 @@ if (isset($_GET["refresh"]))
 // $system = "http://172.17.0.1:8080";	// Coding for docker service vIP
 
 $system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
-if (strpos ($_SERVER["HTTP_POST"], ":") === false) {
+if (strpos ($_SERVER["HTTP_HOST"], ":") === false) {
     $system .= ":9080";
 }
 
@@ -152,7 +152,6 @@ if (isset($_GET["submit"])) {
 
 <?php
 function neueSeite() {
-	// $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; 
 	echo '	<form name="htmlform" method="get" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) .'">
 			<table width="900px">
 				<tr>
@@ -291,6 +290,7 @@ function bekannteSeite() {
 
 }
 
+/*
 function einPaarSchoeneStellen() {
 	$a[] = "/brot.php?x=-0.74303&dx=0.01611&y=0.126433&dy=0.016&f=1&i=4000&nw=192&foo=&oldfac=1&submit=Submit";
 	$a[] = "/brot.php?x=-0.7435669&dx=0.0022878&y=0.1314023&dy=0.0022878&f=1&i=10000&nw=192&foo=&oldfac=1&submit=Submit";
@@ -298,6 +298,7 @@ function einPaarSchoeneStellen() {
 	$a[] = "/brot.php?x=-0.60026267651841&dx=3.3946707844733E-7&y=0.66461459766865&dy=3.3946707844733E-7&f=1&i=50000&nw=192&foo=&oldfac=1&submit=Submit";
 	
 }
+*/
 ?>
 
 </BODY>
