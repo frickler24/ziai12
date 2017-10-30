@@ -68,6 +68,18 @@ docker build -t mandel -f Dockerfile.nginx .
 docker build -t fpmimage -f Dockerfile.phpfpm .
 docker images
 
+# Für interne Vorbereitung:
+docker login
+docker build -t frickler24/mandel:1.0.1 -t frickler24/mandel:latest -t mandel:1.0.1 -f Dockerfile.nginx .
+docker build -t frickler24/fpmimage:1.0.1 -t frickler24/fpmimage:latest -t fpmimage:1.0.1 -f Dockerfile.phpfpm .
+docker push frickler24/mandel:1.0.1
+docker push frickler24/mandel:latest
+docker push frickler24/fpmimage:1.0.1
+docker push frickler24/fpmimage:latest
+zip -0 -j -v -D ../phpfiles:1.0.1.zip *php index.html
+
+
+# Weiter geht's für alle
 docker run -d -p 8080:80 mandel
 docker logs $(docker ps -n 1 -q)
 
@@ -102,6 +114,8 @@ cat nas/w*
 cat nas/m*
 
 for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > nas/$typ-$(docker node ls -q) ; done         # Noch mal checken am NAS
+
+ACHTUNG Image size 416MB !
 
 docker service create \
 --name=viz \

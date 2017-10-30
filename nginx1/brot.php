@@ -32,6 +32,14 @@ if (isset($_GET["refresh"]))
 </HEAD>
 <BODY>
 
+<script language="javascript" type="text/javascript">
+    // if no search string (parameters) is given, 
+    // forward to the same href with ist origin as parameter origURL
+	if (document.location.search == "") {
+		document.location.replace (document.location.href + "?origURL=" + document.location.origin);
+	}
+</script>
+
 <h1>Hier ist ein Ausschnitt der Mandelbrotmenge</h1>
 <?php
 
@@ -41,12 +49,12 @@ if (isset($_GET["refresh"]))
 // $system = "http://172.17.0.1:8080";	// Coding for docker service vIP
 
 $system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
+echo "<p>Old link to system was $system ";
 if ((strpos ($_SERVER["HTTP_HOST"], ":") === false) && (isset($_GET["origURL"]))) {
-//     echo "<p>Old link to system was $system ";
     $system = $_GET["origURL"];
-//     echo "and new link to system is $system</p>";
+    echo "and new link to system is $system";
 }
-
+echo "</p>";
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
 $dim_y=$dim_x / 4 * 3;
@@ -141,7 +149,8 @@ if (isset($_GET["submit"])) {
 				$mx = ($center_x - $diameter_x) + ($diameter_x / $cols / 4 * 3) + (2 * $diameter_x / $cols * $c);
 				$my = ($center_y - $diameter_y) + ($diameter_y / $rows / 3 * 4) + (2 * $diameter_y / $rows * $r);
 
-				$link = "${system}/brot.php?f=${factor}&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&refresh="
+				$link = "${system}/brot.php?f=${factor}&origURL=" . htmlspecialchars($system) 
+					. "&x=${mx}&y=${my}&dx=${dx2a}&dy={$dy2a}&i=${iter}&refresh="
 					. ($refresh? 'y':'n') . "&nw=$numWorkers&submit=Submit";
 				echo ("<td> <a href=\"${link}\"><img border=\"0\" src=\"${str}\"></img></a></td>\n");
 			}
@@ -156,7 +165,7 @@ if (isset($_GET["submit"])) {
 function neueSeite() {
 	// $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; 
 	echo '	<form name="htmlform" method="get" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) .'">
-            <input type="hidden" name="origURL" id="origURL" value=":80">
+            <input type="hidden" name="origURL" id="origURL" value="nothing">
 			<table width="900px">
 				<tr>
 					<td valign="center">
@@ -225,7 +234,7 @@ function bekannteSeite() {
 	if ($debug) echo "<p> $center_x, $diameter_x, $center_y, $diameter_y, $factor, $iter, $rows, $cols</p>p>";
 	
 	echo '	<form name="htmlform" method="get" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) .'">
-            <input type="hidden" name="origURL" id="origURL" value=":80">
+            <input type="hidden" name="origURL" id="origURL" value="nothing">
 			<table width="900px">
 				<tr>
 					<td valign="center">
@@ -305,10 +314,10 @@ function einPaarSchoeneStellen() {
 ?>
 
 <script language="javascript" type="text/javascript">
+	// just remember the origin in a hidden argument
+	// get the Protocol + Server + Port
     var orig = document.location.origin;
-    // alert ("Das document.location.origin = " + orig);
     document.getElementById("origURL").value = orig;
-    // alert ("2.: document.getElementById(origURL).value = " + document.getElementById("origURL").value);
 </script>
 
 
