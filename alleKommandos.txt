@@ -154,3 +154,7 @@ docker service update --update-delay 1m --update-parallelism 1 --image frickler2
 docker service update --rollback phpfpm
 docker service update --update-delay 1s --update-parallelism 4 --image frickler24/fpmimage:1.0.1 --detach=true phpfpm
 
+docker build -t haproxy .
+docker rm -f hap ; docker run -d -p 9080:80 -p 9081:81 -p 9082:9082 --name hap haproxy
+
+
