@@ -59,6 +59,7 @@ docker logs webserver
 
 
 for i in {0..9} ; do docker run -d --name webs$i -p 808$i:80 myng ; done
+for i in {0..9} ; do curl -s http://localhost:808$i/mandel.php -o /dev/null & done
 for i in {0..9} ; do chromium-browser "http://localhost:808$i/brot.php?f=1&x=-0.58935546875&y=0.55902777777778&dx=0.005859375&dy=0.0078125&i=200&refresh=y&nw=192&submit=Submit" 2>/dev/null & done
 for i in {0..9} ; do docker rm -f webs$i ; done
 
@@ -70,13 +71,16 @@ docker images
 
 # Für interne Vorbereitung:
 docker login
+pushd ~/ziai12/nginx2
 docker build -t frickler24/mandel:1.0.1 -t frickler24/mandel:latest -t mandel:1.0.1 -f Dockerfile.nginx .
 docker build -t frickler24/fpmimage:1.0.1 -t frickler24/fpmimage:latest -t fpmimage:1.0.1 -f Dockerfile.phpfpm .
 docker push frickler24/mandel:1.0.1
 docker push frickler24/mandel:latest
 docker push frickler24/fpmimage:1.0.1
 docker push frickler24/fpmimage:latest
+cd ../haproxy
 zip -0 -j -v -D ../phpfiles:1.0.1.zip *php index.html
+popd
 
 
 # Weiter geht's für alle
