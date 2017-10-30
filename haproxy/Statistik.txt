@@ -1,0 +1,16 @@
+
+Konfiguration:
+
+lokale myng (nging mit php al s ein Docker-Image) auf 4 Knoten und den flgdenden Parametern:
+http://lutz:8080/brot.php?x=-1.3671875&dx=0.09375&y=-0.0625&dy=0.09375&i=1000&nw=192&submit=Submit
+ca. 1:27 Minuten = 87 Sekunden Laufzeit
+
+Elastic Beanstak (1 Mini-CPU), Anzahl Kerne unbekannt aber wahrscheinlich 1, und denselben Konfigdaten:
+http://ebmandel.eu-central-1.elasticbeanstalk.com/brot.php?origURL=http%3A%2F%2Febmandel.eu-central-1.elasticbeanstalk.com&x=-1.3671875&dx=0.09375&y=-0.0625&dy=0.09375&i=10000&nw=192&submit=Submit
+
+0:06,9
+
+Verhältnis 1 : 12,6 in der Performance
+
+
+
