@@ -42,9 +42,9 @@ if (isset($_GET["refresh"]))
 
 $system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
 if ((strpos ($_SERVER["HTTP_HOST"], ":") === false) && (isset($_GET["origURL"]))) {
-    echo "<p>Old link to system was $system ";
+//     echo "<p>Old link to system was $system ";
     $system = $_GET["origURL"];
-    echo "and new link to system is $system</p>";
+//     echo "and new link to system is $system</p>";
 }
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
