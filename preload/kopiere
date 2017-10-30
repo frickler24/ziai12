@@ -4,6 +4,8 @@ mkdir -p ~/.ssh
 cd ~/.ssh
 chmod 700 .
 cp /mnt/preload/* .
+cp /mnt/preload/.bash_aliases ~/.
+rm -f ./kopiere
 chmod 600 *
 exit 0
 
