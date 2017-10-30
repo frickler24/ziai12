@@ -41,11 +41,11 @@ if (isset($_GET["refresh"]))
 // $system = "http://172.17.0.1:8080";	// Coding for docker service vIP
 
 $system = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"];
-if (strpos ($_SERVER["HTTP_HOST"], ":") === false) {
-    $system .= ":9080";
+if ((strpos ($_SERVER["HTTP_HOST"], ":") === false) && (isset($_GET["origURL"]))) {
+    echo "<p>Old link to system was $system ";
+    $system = $_GET["origURL"];
+    echo "and new link to system is $system</p>";
 }
-
-echo "<p>New generated link to system is $system</p>";
 
 // Dimension of picture in pixel (always 4:3 ration for these mandelbrot pictures)
 $dim_x=1024;
@@ -156,6 +156,7 @@ if (isset($_GET["submit"])) {
 function neueSeite() {
 	// $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; 
 	echo '	<form name="htmlform" method="get" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) .'">
+            <input type="hidden" name="origURL" id="origURL" value=":80">
 			<table width="900px">
 				<tr>
 					<td valign="center">
@@ -224,6 +225,7 @@ function bekannteSeite() {
 	if ($debug) echo "<p> $center_x, $diameter_x, $center_y, $diameter_y, $factor, $iter, $rows, $cols</p>p>";
 	
 	echo '	<form name="htmlform" method="get" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) .'">
+            <input type="hidden" name="origURL" id="origURL" value=":80">
 			<table width="900px">
 				<tr>
 					<td valign="center">
@@ -301,6 +303,14 @@ function einPaarSchoeneStellen() {
 	
 }
 ?>
+
+<script language="javascript" type="text/javascript">
+    var orig = document.location.origin;
+    // alert ("Das document.location.origin = " + orig);
+    document.getElementById("origURL").value = orig;
+    // alert ("2.: document.getElementById(origURL).value = " + document.getElementById("origURL").value);
+</script>
+
 
 </BODY>
 </HTML>
