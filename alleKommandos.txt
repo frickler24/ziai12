@@ -33,9 +33,9 @@ ls -l
 geany alleKommandos.txt &     # Wenn es nicht schon offen ist :-)
 
 # Folie 25
-sudo apt install nginx
-chromium-browser http://localhost
-sudo geany /var/www/html/index.nginx-debian.html
+sudo apt install -y nginx
+chromium-browser http://localhost &
+sudo geany /var/www/html/index.nginx-debian.html &
 
 # Folie 27
 # Achtung, nach der folgenden Zeile erst mal die Installation abwarten!
