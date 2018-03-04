@@ -203,8 +203,8 @@ curl -s http://localhost:8080/test.php | grep -C 2 "You run"
 
 # Folie 78
 
-ip addr show wlan0
-docker swarm init --advertise-addr wlan0            # ACHTUNG
+ip addr show eth0
+docker swarm init --advertise-addr $(ip -4 addr show eth0 | grep "^....inet" | sed "s/.*inet //" | sed "s/\/.*$//")
 docker swarm join-token manager
 cd ~/ziai12; ./addnas
 ls -lL nas
@@ -213,13 +213,14 @@ ls -lL nas
 docker node ls
 docker node ls -q
 docker swarm join-token manager
+# Die beiden nachfolgenden Statements funktionieren nur, wenn sich noch niemand am Schwarm beteiligt hat.
+# Deshalb werden sie hier zwar für den lokalen Test genommen, aber die Schleife unten macht es richtig.
 docker swarm join-token manager > nas/manager-$(docker node ls -q)
 docker swarm join-token worker > nas/worker-$(docker node ls -q)
-
 cat nas/w*
 cat nas/m*
 
-for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > nas/$typ-$(docker node ls -q) ; done         # Noch mal checken am NAS
+for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > nas/$typ-$(docker node inspect self |grep '"ID":' | cut -d'"' -f 4) ; chmod 755 nas/$typ-$(docker node inspect self |grep '"ID":' | cut -d'"' -f 4) ; done
 
 # Folie 89
 
@@ -243,7 +244,7 @@ docker service create \
 --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
 alexellis2/visualizer-arm
 
-chromium-browser http://localhost:8080/test.php 2>/dev/null &
+chromium-browser http://172.17.0.1:8081 2>/dev/null &
 docker service ls
 docker service ps viz
 
@@ -267,8 +268,8 @@ docker service create \
 --detach=false \
 mandel
 
-# Evtl. hier noch die Anzhal der nginxe skalieren; Sollten so viele sein, dass nachher einer vom Knoten Lutz verdrängt werden muss
-docker service scale 
+# Evtl. hier noch die Anzahl der nginxe skalieren; Sollten so viele sein, dass nachher einer vom Knoten Lutz verdrängt werden muss
+#docker service scale 
 
 chromium-browser http://172.17.0.1:8080/brot.php 2>/dev/null &
 
