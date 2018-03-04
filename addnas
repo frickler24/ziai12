@@ -3,11 +3,10 @@
 sudo umount /home/pi/nas > /dev/null 2>&1
 rm -f /home/pi/ziai12/nas
 mkdir -p /home/pi/nas
-(grep -v "^\/\/192\.168\.178\.1\/RuV-NAS" /etc/fstab ; \
-echo "//192.168.178.1/RuV-NAS	/home/pi/nas	cifs	credentials=/home/pi/ziai12/.credentials,uid=1000,gid=1000,sec=ntlm,noauto,iocharset=utf8	0	0") \
-| sudo tee /etc/fstab > /dev/null
-sudo mount /home/pi/nas
-chmod 755 /home/pi/nas
-mkdir -p /home/pi/nas/Jetflash-Transcend32G-00/ziai12
-ln -s /home/pi/nas/Jetflash-Transcend32G-00/ziai12 /home/pi/ziai12/nas
+#(grep -v "^\/\/192\.168\.178\.1\/RuV-NAS" /etc/fstab ; echo "//192.168.178.1/RuV-NAS	/home/pi/nas	cifs	credentials=/home/pi/ziai12/.credentials,uid=1000,gid=1000,sec=ntlm,noauto,iocharset=utf8	0	0") | sudo tee /etc/fstab > /dev/null
 
+(grep -v "^\/\/lutz/ZIAI12" /etc/fstab ; echo "//lutz/ZIAI12	/home/pi/nas	cifs	username=ziai12,password=supergeheimesPasswort,uid=1000,gid=1000,sec=ntlm,noauto,iocharset=utf8	0	0") | sudo tee /etc/fstab > /dev/null
+sudo mount /home/pi/nas
+# sudo chmod 755 /home/pi/nas # Setzen der Rechte geht bei Raspi-Samba nicht
+mkdir -p /home/pi/nas/ziai12
+ln -s /home/pi/nas/ziai12 /home/pi/ziai12/nas

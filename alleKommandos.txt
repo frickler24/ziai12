@@ -159,17 +159,21 @@ docker images
 #
 # NUR FÜR DIE INTERNE VORBEREITUNG !!!!
 #
-docker login
-pushd ~/ziai12/nginx2
-docker build -t frickler24/mandel:1.0.1 -t frickler24/mandel:latest -t mandel:1.0.1 -f Dockerfile.nginx .
-docker build -t frickler24/fpmimage:1.0.1 -t frickler24/fpmimage:latest -t fpmimage:1.0.1 -f Dockerfile.phpfpm .
-docker push frickler24/mandel:1.0.1
-docker push frickler24/mandel:latest
-docker push frickler24/fpmimage:1.0.1
-docker push frickler24/fpmimage:latest
-cd ../haproxy
-zip -0 -j -v -D ../phpfiles:1.0.1.zip *php index.html
-popd
+function bereiteDockerImagesVor {
+	docker login
+	pushd ~/ziai12/nginx2
+	docker build -t frickler24/mandel:1.0.1 -t frickler24/mandel:latest -t mandel:1.0.1 -f Dockerfile.nginx .
+	docker build -t frickler24/fpmimage:1.0.1 -t frickler24/fpmimage:latest -t fpmimage:1.0.1 -f Dockerfile.phpfpm .
+	docker push frickler24/mandel:1.0.1
+	docker push frickler24/mandel:latest
+	docker push frickler24/fpmimage:1.0.1
+	docker push frickler24/fpmimage:latest
+	cd ../haproxy
+	zip -0 -j -v -D ../phpfiles:1.0.1.zip *php index.html
+	popd
+}
+# Hiermit könnte man die Funktion aufrufen:
+# bereiteDockerImagesVor
 #
 # Ende Vorbereitungsblock
 ################################################################################################################
