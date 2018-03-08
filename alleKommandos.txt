@@ -40,12 +40,14 @@ sudo geany /var/www/html/index.nginx-debian.html &
 # Folie 27
 # Achtung, nach der folgenden Zeile erst mal die Installation abwarten!
 sudo apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+# Achtung, hier erst mal die Installation abwarten!
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 echo "deb [arch=armhf] https://download.docker.com/linux/debian \
      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
 sudo apt update
 sudo apt install -y docker-ce
+# Achtung, auch hier erst mal die Installation abwarten!
 sudo usermod -aG docker pi
 
 sudo docker run armhf/hello-world
@@ -224,7 +226,9 @@ for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > n
 
 # Folie 89
 
-ACHTUNG Image size 416MB !
+###############################################
+# ACHTUNG Image size 416MB für den Visualizer !
+###############################################
 
 # Wenn ein beliebiger Manager den Visualizer starten können soll
 docker service create \
@@ -286,10 +290,16 @@ docker service ps phpfpm
 docker service scale mbr=12
 
 # Folie 103
+# Wirklich benmötigt wird nur das Update von phpfpm, denn nur dafür gehen wir nachher auf die 1.0.3
 docker service update --update-delay 1s --update-parallelism 2 --image frickler24/fpmimage:1.0.1 --detach=true phpfpm
+
+# Also das hier optional - wenn man bspw. mit anderen Parametern spielen möchte
 docker service update --update-delay 1s --update-parallelism 2 --image frickler24/mandel:1.0.1 --detach=true mbr
 
+# Und jetzt die Überraschungsoftware
 docker service update --update-delay 1m --update-parallelism 1 --image frickler24/fpmimage:1.0.3 --detach=false phpfpm
+
+# und wieder zurück
 docker service update --rollback phpfpm
 
 # Nur wenn's nicht mit dem Rollback klappt, neu laden des Service
