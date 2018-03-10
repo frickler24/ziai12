@@ -50,6 +50,7 @@ sudo apt install -y docker-ce
 # Achtung, auch hier erst mal die Installation abwarten!
 sudo usermod -aG docker pi
 
+# Logout und wieder login, sonst greift das usermod noch nicht!
 sudo docker run armhf/hello-world
 
 # Folie 32
@@ -219,6 +220,8 @@ docker swarm join-token manager
 # Deshalb werden sie hier zwar für den lokalen Test genommen, aber die Schleife unten macht es richtig.
 docker swarm join-token manager > nas/manager-$(docker node ls -q)
 docker swarm join-token worker > nas/worker-$(docker node ls -q)
+# In dem neuen NAS werden die Berechtigungen ordentlich gehandhabt - deshalb setzen wir die Datei auf Ausführbar für alle.
+chmod 755 nas/*-$(docker node ls -q) # chmod 755 = lesen + schreiben + ausführen für den Eigentümer; lesen + ausführen für alle anderen
 cat nas/w*
 cat nas/m*
 
@@ -273,7 +276,8 @@ docker service create \
 mandel
 
 # Evtl. hier noch die Anzahl der nginxe skalieren; Sollten so viele sein, dass nachher einer vom Knoten Lutz verdrängt werden muss
-#docker service scale 
+docker service scale mbp=8
+docker service scale mbp=4
 
 chromium-browser http://172.17.0.1:8080/brot.php 2>/dev/null &
 
