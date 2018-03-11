@@ -11,3 +11,4 @@ kubernetes/*
 FullNode*.img
 Backup_8GB-Stick_für_NAS_in_Fritzbox/*
 .directory
+webproxy
