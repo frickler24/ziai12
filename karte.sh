@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Konfigurationsblock
+NOOBS="NOOBS_v2.7.0"
+
+#### ENDE des Konfigurationsblocks
+
 # Lösche vorhandene Partitionen auf einer 16GB-Karte und ierzeuge ein neues FAT32-FS.
 # Anschließend installiere NOOBS neu darauf.
 
@@ -61,7 +66,7 @@ read
 # Das eigentliche Copy geht schnell, aber die Kiste schreibt nur in die FS-Buffer.
 # Die Karte darf erst herausgenommen werden, wenn das letzte Byte geschrieben ist.
 # Der Buffer-Flush erfolgt wie gewohnt mit sync. Das kann dauern (mehrere Minuten)
-(cd ~lutz/Projekte/ziai12/NOOBS_v2.4.5/; tar cf - .) | (cd /mnt; tar --no-same-owner -xvf -)
+(cd ~lutz/Projekte/ziai12/${NOOBS}/; tar cf - .) | (cd /mnt; tar --no-same-owner -xvf -)
 echo
 echo "Schreibe Dateisystempufferinhalte auf die Karte (sync disk)..."
 sync

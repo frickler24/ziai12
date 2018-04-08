@@ -4,9 +4,10 @@ arm/hello
 blink/blinken
 nas
 nas/*
-NOOBS_v2_4_2/*
-NOOBS_v2.4.4/*
-NOOBS_v2.4.5/*
+NOOBS_v2_4_2
+NOOBS_v2.4.4
+NOOBS_v2.4.5
+NOOBS_v2.7.0
 kubernetes/*
 FullNode*.img
 Backup_8GB-Stick_für_NAS_in_Fritzbox/*

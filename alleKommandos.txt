@@ -37,9 +37,19 @@ sudo apt install -y nginx
 chromium-browser http://localhost &
 sudo geany /var/www/html/index.nginx-debian.html &
 
+# Für den Netzwerk-Hack das folgende vorbereiten auf Raspi Lutz:
+################################
+function machFitFuerHack {
+    # Editiere in ~/webproxy_ziai12 die Datei _etc_haproxy_haproxy.cfg
+    # Ersetze die xxxx mit den Namen der vorhandenen Raspis
+    # make (später make update)
+    # ip addr und surfen auf dem neuen Netzwerk
+}
+
 # Folie 27
 # Achtung, nach der folgenden Zeile erst mal die Installation abwarten!
-sudo apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+# Alte Zeile für NOOBS_2.4.*: sudo apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+sudo apt install -y apt-transport-https ca-certificates curl gnupg
 # Achtung, hier erst mal die Installation abwarten!
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
@@ -99,22 +109,21 @@ exit
 ################################################################
 
 
-# Folie 39
+# Folie 40
 lxterminal -e docker run arm32v6/alpine sh -c "while true; do date ; sleep 1 ; done"
 docker pause $(docker ps -f status=running -lq) ; docker ps    # 0-n mal möglich
 docker unpause $(docker ps -f status=paused -q) ; docker ps
 
-# Folie 42
+# Folie 43
 docker logs $(docker ps -lqf status=running) |tail -1
 docker logs $(docker ps -lqf status=running) |head -1
 docker inspect $(docker ps -lqf status=running)
 docker top $(docker ps -lqf status=running)
 docker stop $(docker ps -lqf status=running)
 
-# Folie 43
+# Folie 44
 docker images
 docker image ls
-chromium-browser https://hub.docker.com/explore 2>/dev/null &
 
 docker run -it frickler24/rpi-hello-world
 docker run -it tutum/hello-world                        # Auf Intel NB sollte das laufen
@@ -123,7 +132,7 @@ docker image inspect tutum/hello-world | grep Archit
 docker image ls
 docker rmi -f tutum/hello-world
 
-# Folie 46
+# Folie 47
 
 cd ~/ziai12/arm
 geany hello.c Dockerfile &
@@ -132,14 +141,14 @@ ls -l
 docker build -t mein-erstes-image .
 docker run mein-erstes-image
 
-# Folie 50
+# Folie 51
 
 cd ~/ziai12/nginx1
 geany Dockerfile.fromAlpineLocalNGINX &
 docker build -t myng -f Dockerfile.fromAlpineLocalNGINX .
 docker images
 
-# Folie 54
+# Folie 55
 docker run -d --name webserver -p 8080:80 myng
 chromium-browser http://localhost:8080/test.html 2>/dev/null &
 docker logs webserver
@@ -149,7 +158,10 @@ docker rm -f webserver
 for i in {0..9} ; do docker run -d --name webs$i -p 808$i:80 myng ; done
 for i in {0..9} ; do curl -s http://localhost:808$i/mandel.php -o /dev/null & done      # oder mit mehr Flackern das nächste Statement
 for i in {0..9} ; do chromium-browser "http://localhost:808$i/brot.php?f=1&x=-0.58935546875&y=0.55902777777778&dx=0.005859375&dy=0.0078125&i=200&refresh=n&nw=192&submit=Submit" 2>/dev/null & done
-for i in {0..9} ; do docker stop webs$i ; done
+for i in {0..9} ; do docker rm -f webs$i ; done
+# oder -etwas milder:
+# for i in {0..9} ; do docker stop -t 0 webs$i ; done
+
 
 #Folie 61
 
@@ -162,6 +174,7 @@ docker images
 #
 # NUR FÜR DIE INTERNE VORBEREITUNG !!!!
 #
+
 function bereiteDockerImagesVor {
 	docker login
 	pushd ~/ziai12/nginx2
@@ -183,7 +196,7 @@ function bereiteDockerImagesVor {
 
 
 # Weiter geht's für alle
-# Folie 65
+# Folie 66
 docker run -d -p 8080:80 mandel
 docker ps
 docker ps -a
@@ -204,7 +217,7 @@ docker run -d --name webserver -p 8080:80 --network meinNetz mandel
 chromium-browser http://localhost:8080/test.php 2>/dev/null &
 curl -s http://localhost:8080/test.php | grep -C 2 "You run"
 
-# Folie 78
+# Folie 79
 
 ip addr show eth0
 docker swarm init --advertise-addr $(ip -4 addr show eth0 | grep "^....inet" | sed "s/.*inet //" | sed "s/\/.*$//")
@@ -227,7 +240,7 @@ cat nas/m*
 
 for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > nas/$typ-$(docker node inspect self |grep '"ID":' | cut -d'"' -f 4) ; chmod 755 nas/$typ-$(docker node inspect self |grep '"ID":' | cut -d'"' -f 4) ; done
 
-# Folie 89
+# Folie 90
 
 ###############################################
 # ACHTUNG Image size 416MB für den Visualizer !
@@ -255,7 +268,7 @@ chromium-browser http://172.17.0.1:8081 2>/dev/null &
 docker service ls
 docker service ps viz
 
-# Folie 91
+# Folie 92
 docker network create --driver=overlay schwarmNetz
 docker network ls
 docker network inspect schwarmNetz
