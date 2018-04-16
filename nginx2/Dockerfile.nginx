@@ -1,6 +1,6 @@
 FROM arm32v6/alpine
 
-MAINTAINER Frickler24 <frickler24@frickler24.de>
+LABEL maintainer="frickler24@frickler24.de"
 
 # Als erstes mal den nginx laden und installieren
 RUN apk --no-cache add nginx

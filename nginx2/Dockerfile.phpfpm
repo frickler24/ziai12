@@ -1,6 +1,6 @@
 FROM arm32v6/alpine
 
-MAINTAINER Frickler24 <frickler24@frickler24.de>
+LABEL maintainer="frickler24@frickler24.de"
 
 # Erzeuge eine Gruppe+User für php
 RUN addgroup www-data
