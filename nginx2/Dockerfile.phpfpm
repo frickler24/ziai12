@@ -38,6 +38,6 @@ COPY brot.php /var/www/html/brot.php
 
 EXPOSE 9000
 
-# Start phpfpm so, dass der Container im Vordergrund bleibt
+# Starte phpfpm so, dass der Container im Vordergrund bleibt
 CMD /bin/sh -c "echo 'Starting php-fpm5' && php-fpm5 --nodaemonize && echo 'php-fpm5 stopped.'"
 
