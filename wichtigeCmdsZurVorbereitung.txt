@@ -1,0 +1,36 @@
+ 1090  ssh-keygen -f "/home/pi/.ssh/known_hosts" -R foo
+ 1118  sudo openvpn --remote frickler.eichler-web.de --dev tun
+ 1140  sudo vi /etc/vpnc/default.conf
+ 1141  sudo vpnc
+ 1150  sudo vpnc-disconnect 
+ 1153  sudo vpnc-connect
+ 1167  sudo apt install openvpn
+ 1172  openvpn
+ 1268  vi _etc_haproxy_haproxy.cfg 
+ 1269  docker build -t hap .
+ 1282  docker run -dp 80:80 --name webproxy hap
+ 1291  docker rm -f webproxy 
+ 1391  docker cp _etc_haproxy_haproxy.cfg webproxy:/etc/haproxy/haproxy.cfg
+ 1393  docker restart webproxy
+ 1395  vi _etc_haproxy_haproxy.cfg 
+ 1461  vi /home/pi/ziai12/.credentials
+ 1464  ps alxww|grep smbd
+ 1470  cd /home/share/
+ 1472  sudo smbpasswd ziai12
+ 1477  ll /home/share
+ 1504  rm nas
+ 1505  ln -s /home/share/ziai12/ nas
+ 1506  ll nas
+ 1684  cat .credentials 
+ 1685  git diff .credentials
+ 1686  git checkout -- .credentials
+ 1687  gs
+ 1711  docker rm -f hap ; docker run -d -p 9080:80 -p 9081:81 -p 9082:9082 --name hap haproxy
+ 1725  watch vcgencmd measure_temp
+ 1750  cd haproxy/
+ 1752  vi _etc_haproxy_haproxy.cfg 
+ 1757  cd webproxy_ziai12/
+ 1761  vi Makefile
+ 1766  make
+ 1769  docker run -dp 80:80 --name webproxy hap
+ 1770  docker run -dp 80:80 --name webproxy webproxy
