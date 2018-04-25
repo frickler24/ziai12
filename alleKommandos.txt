@@ -11,49 +11,23 @@ last
 df -H
 df -H .
 man ls
-geany /etc/motd &
-sudo cat /etc/shadow
 
-# Folie 21
-sudo mount /dev/mmcblk0p1 /mnt
-/mnt/defaults/preload/kopiere
-sudo umount /mnt
-
-# Folie 22
-sudo apt update
-sudo apt upgrade -y
-reboot
-
-# Github Folie 23: In anderem Fenster eingeben
-chromium-browser https://github.com/frickler24/ziai12 2>/dev/null &
-
-cd ~ ; git clone https://github.com/frickler24/ziai12-mini.git ziai12 ; ls -l
 cd ~/ziai12
 ls -l
 geany alleKommandos.txt &     # Wenn es nicht schon offen ist :-)
 
-# Folie 25
 sudo apt install -y nginx
 chromium-browser http://localhost &
 sudo geany /var/www/html/index.nginx-debian.html &
 
-# Folie 27
-# Achtung, nach der folgenden Zeile erst mal die Installation abwarten!
-sudo apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-# Achtung, hier erst mal die Installation abwarten!
-
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-echo "deb [arch=armhf] https://download.docker.com/linux/debian \
-     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
 sudo apt update
 sudo apt install -y docker-ce
 # Achtung, auch hier erst mal die Installation abwarten!
+
 sudo usermod -aG docker pi
 
-# Logout und wieder login, sonst greift das usermod noch nicht!
 sudo docker run armhf/hello-world
 
-# Folie 32
 docker run -it arm32v6/alpine /bin/sh
 
 ################################################################
@@ -68,62 +42,15 @@ df -h .
 
 docker ps
 docker ps --help
-docker ps -s            # mehrfach mit dem unteren Block
 
-################################################################
-# Erzeugen der großen Datei im Container-Fenster
-ls -l /tmp
-dd if=/dev/zero of=/tmp/foo bs=1M count=1
-ls -l /tmp
-
-# und nach dem Nachschauen in der Docker station (docker ps -s)
-
-rm /tmp/foo
-################################################################
 
 docker ps -a
-docker ps -as
-
-# Folie 38
 
 docker stats                                # im neuen Fenster
 
-docker run -it arm32v6/alpine /bin/sh       # im Docker-Fenster
-################################################################
-# Erzeugen von Last im Container-Fenster
-dd if=/dev/zero of=/dev/null &      # mehrfach ausführen
-top
-
-# irgendwann top mit "q" verlassen und:
-exit
-################################################################
-
-
-# Folie 39
-lxterminal -e docker run arm32v6/alpine sh -c "while true; do date ; sleep 1 ; done"
-docker pause $(docker ps -f status=running -lq) ; docker ps    # 0-n mal möglich
-docker unpause $(docker ps -f status=paused -q) ; docker ps
-
-# Folie 42
-docker logs $(docker ps -lqf status=running) |tail -1
-docker logs $(docker ps -lqf status=running) |head -1
-docker inspect $(docker ps -lqf status=running)
-docker top $(docker ps -lqf status=running)
-docker stop $(docker ps -lqf status=running)
-
-# Folie 43
 docker images
 docker image ls
-chromium-browser https://hub.docker.com/explore 2>/dev/null &
 
-docker run -it frickler24/rpi-hello-world
-docker run -it tutum/hello-world                        # Auf Intel NB sollte das laufen
-docker image inspect tutum/hello-world | grep Archit
-
-docker image ls
-docker rmi -f tutum/hello-world
-
-# Folie 46
 
 cd ~/ziai12/arm
 geany hello.c Dockerfile &
@@ -132,199 +59,20 @@ ls -l
 docker build -t mein-erstes-image .
 docker run mein-erstes-image
 
-# Folie 50
-
 cd ~/ziai12/nginx1
 geany Dockerfile.fromAlpineLocalNGINX &
 docker build -t myng -f Dockerfile.fromAlpineLocalNGINX .
 docker images
 
-# Folie 54
 docker run -d --name webserver -p 8080:80 myng
 chromium-browser http://localhost:8080/test.html 2>/dev/null &
+docker ps
 docker logs webserver
-
+docker stats
 docker rm -f webserver
 
 for i in {0..9} ; do docker run -d --name webs$i -p 808$i:80 myng ; done
 for i in {0..9} ; do curl -s http://localhost:808$i/mandel.php -o /dev/null & done      # oder mit mehr Flackern das nächste Statement
 for i in {0..9} ; do chromium-browser "http://localhost:808$i/brot.php?f=1&x=-0.58935546875&y=0.55902777777778&dx=0.005859375&dy=0.0078125&i=200&refresh=n&nw=192&submit=Submit" 2>/dev/null & done
 for i in {0..9} ; do docker stop webs$i ; done
-
-#Folie 61
-
-cd ~/ziai12/nginx2
-docker build -t mandel -f Dockerfile.nginx .
-docker build -t fpmimage -f Dockerfile.phpfpm .
-docker images
-
-################################################################################################################
-#
-# NUR FÜR DIE INTERNE VORBEREITUNG !!!!
-#
-function bereiteDockerImagesVor {
-	docker login
-	pushd ~/ziai12/nginx2
-	docker build -t frickler24/mandel:1.0.1 -t frickler24/mandel:latest -t mandel:1.0.1 -f Dockerfile.nginx .
-	docker build -t frickler24/fpmimage:1.0.1 -t frickler24/fpmimage:latest -t fpmimage:1.0.1 -f Dockerfile.phpfpm .
-	docker push frickler24/mandel:1.0.1
-	docker push frickler24/mandel:latest
-	docker push frickler24/fpmimage:1.0.1
-	docker push frickler24/fpmimage:latest
-	cd ../haproxy
-	zip -0 -j -v -D ../phpfiles:1.0.1.zip *php index.html
-	popd
-}
-# Hiermit könnte man die Funktion aufrufen:
-# bereiteDockerImagesVor
-#
-# Ende Vorbereitungsblock
-################################################################################################################
-
-
-# Weiter geht's für alle
-# Folie 65
-docker run -d -p 8080:80 mandel
-docker ps
-docker ps -a
-docker logs $(docker ps -n 1 -q)
-
-docker run -d fpmimage
-docker run -d -p 8080:80 mandel
-docker logs $(docker ps -n 1 -q)
-
-docker network create meinNetz
-docker network ls
-docker network inspect meinNetz
-
-docker rm -f $(docker ps -aq)
-docker run -d --network meinNetz --network-alias phpfpm --name fpm fpmimage
-docker inspect fpm 
-docker run -d --name webserver -p 8080:80 --network meinNetz mandel
-chromium-browser http://localhost:8080/test.php 2>/dev/null &
-curl -s http://localhost:8080/test.php | grep -C 2 "You run"
-
-# Folie 78
-
-ip addr show eth0
-docker swarm init --advertise-addr $(ip -4 addr show eth0 | grep "^....inet" | sed "s/.*inet //" | sed "s/\/.*$//")
-docker swarm join-token manager
-cd ~/ziai12; ./addnas
-ls -lL nas
-
-# Den Block noch mal checken am NAS
-docker node ls
-docker node ls -q
-docker swarm join-token manager
-# Die beiden nachfolgenden Statements funktionieren nur, wenn sich noch niemand am Schwarm beteiligt hat.
-# Deshalb werden sie hier zwar für den lokalen Test genommen, aber die Schleife unten macht es richtig.
-docker swarm join-token manager > nas/manager-$(docker node ls -q)
-docker swarm join-token worker > nas/worker-$(docker node ls -q)
-# In dem neuen NAS werden die Berechtigungen ordentlich gehandhabt - deshalb setzen wir die Datei auf Ausführbar für alle.
-chmod 755 nas/*-$(docker node ls -q) # chmod 755 = lesen + schreiben + ausführen für den Eigentümer; lesen + ausführen für alle anderen
-cat nas/w*
-cat nas/m*
-
-for typ in worker manager ; do (echo -n "# " ; docker swarm join-token $typ) > nas/$typ-$(docker node inspect self |grep '"ID":' | cut -d'"' -f 4) ; chmod 755 nas/$typ-$(docker node inspect self |grep '"ID":' | cut -d'"' -f 4) ; done
-
-# Folie 89
-
-###############################################
-# ACHTUNG Image size 416MB für den Visualizer !
-###############################################
-
-# Wenn ein beliebiger Manager den Visualizer starten können soll
-docker service create \
---name=viz \
---publish=8081:8080/tcp \
---constraint=node.role==manager \
---detach=false \
---mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-alexellis2/visualizer-arm
-
-# Alternativ bei fester Bindung an den rufenden Manager:
-docker service create \
---name=viz \
---publish=8081:8080/tcp \
---constraint=node.id==$(docker node ls -q) \
---detach=false \
---mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-alexellis2/visualizer-arm
-
-chromium-browser http://172.17.0.1:8081 2>/dev/null &
-docker service ls
-docker service ps viz
-
-# Folie 91
-docker network create --driver=overlay schwarmNetz
-docker network ls
-docker network inspect schwarmNetz
-
-docker service create \
---network schwarmNetz \
---mode global \
---name phpfpm \
---detach=false \
-fpmimage
-
-docker service create \
---network schwarmNetz \
---mode replicated --replicas 4 \
---publish 8080:80/tcp \
---name mbr \
---detach=false \
-mandel
-
-# Evtl. hier noch die Anzahl der nginxe skalieren; Sollten so viele sein, dass nachher einer vom Knoten Lutz verdrängt werden muss
-docker service scale mbp=8
-docker service scale mbp=4
-
-chromium-browser http://172.17.0.1:8080/brot.php 2>/dev/null &
-
-# Folie 98: Schon mal vorbereitend für nachher in einem anderen Window downloaden
-docker pull frickler24/mandel:1.0.1 
-docker pull frickler24/mandel:1.0.3 
-docker pull frickler24/fpmimage:1.0.1 
-docker pull frickler24/fpmimage:1.0.3 
-
-# Folie 100
-docker node update --availability drain Lutz
-docker service ps mbr
-docker service ps phpfpm
-docker service scale mbr=12
-
-# Folie 103
-# Wirklich benmötigt wird nur das Update von phpfpm, denn nur dafür gehen wir nachher auf die 1.0.3
-docker service update --update-delay 1s --update-parallelism 2 --image frickler24/fpmimage:1.0.1 --detach=true phpfpm
-
-# Also das hier optional - wenn man bspw. mit anderen Parametern spielen möchte
-docker service update --update-delay 1s --update-parallelism 2 --image frickler24/mandel:1.0.1 --detach=true mbr
-
-# Und jetzt die Überraschungsoftware
-docker service update --update-delay 1m --update-parallelism 1 --image frickler24/fpmimage:1.0.3 --detach=false phpfpm
-
-# und wieder zurück
-docker service update --rollback phpfpm
-
-# Nur wenn's nicht mit dem Rollback klappt, neu laden des Service
-docker service update --update-delay 1s --update-parallelism 4 --image frickler24/fpmimage:1.0.1 --detach=true phpfpm
-
-# Folie 109
-cd ~/ziai12/haproxy
-docker build -t haproxy .
-
-# Das kann auf allen Knoten gestartet werden oder spezfisch
-docker rm -f hap ; docker run -d -p 9080:80 -p 9081:81 -p 9082:9082 --name hap haproxy
-
-# Anschließend den Browser auf die neuen Adressen einstellen
-# Optional viz:
-chromium-browser http://localhost:9081 2>/dev/null &
-
-# Definitiv
-chromium-browser http://localhost:9080/brot.php 2>/dev/null &
-
-# Login auf aws:
-chromium-browser https://frickler24.signin.aws.amazon.com/console 2>/dev/null &
-frickler24 / der kleine Admin / 
-# Und jetzt volle Kanne Last auf die Maschinen geben!
 
