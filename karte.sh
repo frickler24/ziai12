@@ -2,6 +2,7 @@
 
 # Konfigurationsblock
 NOOBS="NOOBS_v2.7.0"
+# NOOBS="NOOBS_v2.8.1"
 
 #### ENDE des Konfigurationsblocks
 
