@@ -50,7 +50,7 @@ print
 __EOF__
 
 # Das Filesystem ist immer FAT32 für NOOBS
-mkfs.msdos -F32 -I -v ${FILESYS}1
+mkfs.msdos -F32 -I -v ${FILESYS}1 -n NOOBS_278
 fsck.msdos -a -w -v ${FILESYS}1
 
 # Das Filesystem ist neu und sollte jetzt vom OS erkannt werden
