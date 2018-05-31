@@ -14,3 +14,8 @@ FullNode*.img
 Backup_8GB-Stick_für_NAS_in_Fritzbox/*
 .directory
 webproxy
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
