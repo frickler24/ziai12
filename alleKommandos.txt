@@ -49,7 +49,8 @@ function machFitFuerHack {
 # Folie 27
 # Achtung, nach der folgenden Zeile erst mal die Installation abwarten!
 # Alte Zeile für NOOBS_2.4.*: sudo apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-sudo apt install -y apt-transport-https ca-certificates curl gnupg
+# Für NOOBS_3.0.0 wird gar nichts weiter benötigt
+# sudo apt install -y apt-transport-https ca-certificates curl gnupg
 # Achtung, hier erst mal die Installation abwarten!
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
@@ -289,8 +290,8 @@ docker service create \
 mandel
 
 # Evtl. hier noch die Anzahl der nginxe skalieren; Sollten so viele sein, dass nachher einer vom Knoten Lutz verdrängt werden muss
-docker service scale mbp=8
-docker service scale mbp=4
+docker service scale mbr=8
+docker service scale mbr=4
 
 chromium-browser http://172.17.0.1:8080/brot.php 2>/dev/null &
 

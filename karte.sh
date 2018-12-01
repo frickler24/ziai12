@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Konfigurationsblock
-NOOBS="NOOBS_v2.7.0"
+# NOOBS="NOOBS_v2.7.0"
 # NOOBS="NOOBS_v2.8.1"
+NOOBS="NOOBS_v3.0.0"
 
 #### ENDE des Konfigurationsblocks
 
