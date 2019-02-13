@@ -11,8 +11,8 @@ NOOBS="NOOBS_v3.0.0"
 # Anschließend installiere NOOBS neu darauf.
 
 # Als erstes bestimme die Größe und das Device der Karte
-parted --list | grep -C 3 15,9GB
-FILESYS=$(parted --list | grep  '15,[89]GB' | grep Festplatte | cut -d" " -f 3 | sed 's/:$//')
+parted --list | grep -C 3 15,.GB
+FILESYS=$(parted --list | grep  '15,.GB' | grep Festplatte | cut -d" " -f 3 | sed 's/:$//')
 
 # Ist es eine 16GB-Karte?
 if [ ${FILESYS}x != "x" ] ; then
