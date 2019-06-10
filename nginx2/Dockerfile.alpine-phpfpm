@@ -1,0 +1,35 @@
+FROM f4s-docker.ruv.de/s390x/alpine-ruv:3.8
+LABEL maintainer="frickler24@frickler24.de"
+
+# Als erstes mal ein paar Tools und installieren
+# Die erste Zeile ist ein Linux-Patchday:
+RUN apk update && apk upgrade
+
+# Jetzt kommen PHP, die Grafik.Lib und die Schnittstelle nginx/php
+RUN apk add php php-gd php-fpm netcat-openbsd
+
+# Verzeichnisse anlegen, falls noch nicht vorhanden
+# Unter /run/xxx merken sich Programme ihre Prozess-IDs
+RUN mkdir -p /run/php/
+
+# Hier stehen ein paar Parameter für phpfpm,
+# z.B. dass er über Port 9000 auf localhost erreichbar sein soll.
+COPY _etc_php_7.0_fpm_php-fpm.conf /etc/php7/php-fpm.conf
+COPY www.conf /etc/php7/php-fpm.d/www.conf
+
+# Testseite zum Lesen von php5-GD Parametern (Graphics develop)
+# und PHP-Standard-Params, wenn wir nginx und phpfpm richtig konfiguriert haben
+COPY _var_www_html_test.php /usr/share/nginx/html/test.php
+
+# Das Berechnen einer einzelnen Mandelbrot-Kachel
+COPY mandel.php /usr/share/nginx/html/mandel.php
+
+# Das gesamte Brötchen berechnen (über mandel.php)
+COPY brot.php /usr/share/nginx/html/brot.php
+
+# Der Port, auf den der Container hören muss
+EXPOSE 9000
+
+# Starte phpfp dass er im Vordergrund bleibt
+CMD /bin/sh -c "echo 'Starting php-fpm7...' && php-fpm7 --nodaemonize -e && echo 'php-fpm7 stopped.'"
+

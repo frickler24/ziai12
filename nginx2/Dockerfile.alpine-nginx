@@ -1,0 +1,25 @@
+FROM f4s-docker.ruv.de/s390x/alpine-ruv:3.8
+LABEL maintainer="frickler24@frickler24.de"
+
+# Als erstes mal ein paar Tools und installieren
+# Die erste Zeile ist ein Linux-Patchday:
+RUN apk update && apk upgrade
+
+# Jetzt kommt nur der Webserver
+RUN apk add nginx
+
+# Verzeichnisse anlegen, falls noch nicht vorhanden
+# Unter /run/xxx merken sich Programme ihre Prozess-IDs
+RUN mkdir -p /run/nginx
+
+# Das Config-File für nginx, damit er weiß, was wir von ihm wollen
+COPY _etc_nginx_conf.d_default.conf /etc/nginx/conf.d/default.conf
+
+# Wenn Option 'try_files' in nginx eingeschaltet ist,
+# muss er auch auf die .php-Dateien zugreifen können.
+# In diesem Beispiel ist die Option 'try_files' ausgeschaltet,
+# das hält das Dockerfile klein.
+
+# Starte nginx so, dass er im Vordergrund bleibt
+CMD /bin/sh -c "echo 'Starte nginx' && nginx -g 'daemon off;' && echo 'das hier kommt nie...'"
+

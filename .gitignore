@@ -17,3 +17,4 @@ webproxy
 !.elasticbeanstalk/*.global.yml
 FullNodeLutz_20171118.img.gz
 nginx1/nginx1.tar
+portainer/*
