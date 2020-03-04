@@ -16,3 +16,7 @@ webproxy
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 FullNodeLutz_20171118.img.gz
+NOOBS_lite_v3_2/
+Vorbereitung/sinenomine-visualizer-s390x-latest.tar.gz
+portainer/
+
